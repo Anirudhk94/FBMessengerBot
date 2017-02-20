@@ -1,13 +1,3 @@
-//This is still work in progress
-/*
-Please report any bugs to nicomwaks@gmail.com
-
-i have added console.log on line 48 
-
-
-
-
- */
 'use strict'
 
 const express = require('express')
