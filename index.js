@@ -50,7 +50,7 @@ app.post('/webhook/', function (req, res) {
 			
 			if (text === 'OFFER_ACCEPTED') {	
 				console.log('Offer data'+JSON.stringify(offer))
-				acceptOffer(offer)
+				acceptOffer(sender, offer)
 				sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
@@ -68,7 +68,7 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
-function acceptOffer(offer) {
+function acceptOffer(sender, offer) {
 	offer.Outcome = "Accepted"
 	request({
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
