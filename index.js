@@ -76,7 +76,7 @@ app.post('/webhook/', function (req, res) {
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
-				sendBestOffer(sender);
+				//sendBestOffer(sender);
 				//sendGenericMessage(sender, token)
 			}
 			continue
