@@ -78,7 +78,7 @@ function sendBestOffer(sender) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults));
+			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults)[0]);
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
 		}
 	})
