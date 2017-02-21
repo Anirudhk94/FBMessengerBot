@@ -46,7 +46,7 @@ app.post('/webhook/', function (req, res) {
 			let text = event.postback.payload
 			let offer = event.postback.offer
 			if (text === 'OFFER_ACCEPTED') {	
-				console.log('Offer data'+ offer)
+				console.log('Offer data'+JSON.stringify(offer))
 				sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
@@ -80,8 +80,9 @@ function sendBestOffer(sender) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label));
-			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label).replace(/"/g,''), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL).replace(/"/g,''),'test', token)
+			let offer = response.body.ResponseData.TopOffers.RankedResults[0]
+			console.log("Top Offer"+JSON.stringify(offer));
+			sendGenericMessage(sender, JSON.stringify(offer.Label).replace(/"/g,''), JSON.stringify(offer.ImageURL).replace(/"/g,''), offer, token)
 			
 		}
 	})
