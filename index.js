@@ -78,10 +78,10 @@ function sendBestOffer(sender) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			console.log(response.body.ResponseData);
+			console.log("Top Offer"+response.body.ResponseData.RankedResults[0]);
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
-			var offers = response.body.ResponseData.RankedResults
-			console.log('Offer 1 : '+JSON.stringify(offers[1]));
+			// var offers = response.body.ResponseData.RankedResults
+			// console.log('Offer 1 : '+JSON.stringify(offers[1]));
 			//sendTextMessage(sender, response.body.ResponseData.RankedResults[1].Label)
 		}
 	})
