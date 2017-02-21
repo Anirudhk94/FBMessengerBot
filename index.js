@@ -1,5 +1,5 @@
 'use strict'
-const http = require('http')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
@@ -53,7 +53,7 @@ app.post('/webhook/', function (req, res) {
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
-				// sendBestOffer(sender);
+				//sendBestOffer(sender);
 				sendGenericMessage(sender, token)
 			}
 			continue
@@ -61,6 +61,29 @@ app.post('/webhook/', function (req, res) {
 	}
 	res.sendStatus(200)
 })
+
+var http = require('http');
+var options = {
+  host: 'www.random.org',
+  path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
+};
+
+callback = function(response) {
+  var str = '';
+
+  //another chunk of data has been recieved, so append it to `str`
+  response.on('data', function (chunk) {
+    str += chunk;
+  });
+
+  //the whole response has been recieved, so we just print it out here
+  response.on('end', function () {
+    console.log(str);
+  });
+}
+
+http.request(options, callback).end();
+
 
 // function sendBestOffer(sender) {
 // 	var options = {
