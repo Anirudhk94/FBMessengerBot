@@ -84,7 +84,7 @@ function acceptOffer(sender, offer) {
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
 		method: 'POST',
 		json: {
-			RankedResults: offer,
+			RankedResults: '['+offer+']',
 			CustomerID:  customer_id,
 		}
 	}, function(error, response, body) {
@@ -127,6 +127,7 @@ function sendBestOffer(sender, type) {
 // const token = process.env.FB_PAGE_ACCESS_TOKEN
 const token = "EAADttZCnpsAcBAD0GqqC6zCY1ZCDMMZA8zLQ6KFD0ul7w4NQsoiR8dY8N0LlVZCiGNcYZC0v6kAcFj3fDVBrn4iBnKzFfn56tflYTT8qRlTP8aH5AmG3WlKkvpeB7ssO2yjteoPmGy01gnYZCoU48tGQPRrzL8YcA2dlImW8j3uQZDZD"
 
+//This function sends a text message to the user
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
 	
@@ -147,6 +148,7 @@ function sendTextMessage(sender, text) {
 	})
 }
 
+//This function displays an offer to the user
 function sendGenericMessage(sender, label, image, proposition) {
 	offer = proposition
 	let messageData = {
@@ -188,6 +190,7 @@ function sendGenericMessage(sender, label, image, proposition) {
 	})
 }
 
+//This function conducts survey to know customer preferences - Data/Voice/SMS
 function sendOptions(sender) {
 	let messageData = {
 		"attachment": {
@@ -230,6 +233,11 @@ function sendOptions(sender) {
 			console.log('Error: ', response.body.error)
 		}
 	})
+}
+
+//This function checks if the entered string has 'Offer', 'Plans' or 'Deals'
+function checkForKeys(message) {
+
 }
 
 // spin spin sugar
