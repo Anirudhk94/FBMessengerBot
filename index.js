@@ -54,7 +54,7 @@ app.post('/webhook/', function (req, res) {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
 				sendBestOffer(sender);
-				sendGenericMessage(sender, token)
+				//sendGenericMessage(sender, token)
 			}
 			continue
 		}
@@ -80,7 +80,7 @@ function sendBestOffer(sender) {
 		} else {
 			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label));
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
-			sendTextMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label))
+			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL), token)
 		}
 	})
 }
@@ -109,16 +109,16 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendGenericMessage(sender) {
+function sendGenericMessage(sender, label, image) {
 	let messageData = {
 		"attachment": {
 			"type": "template",
 			"payload": {
 				"template_type": "generic",
 				"elements": [{
-					"title": "Oculus Rift",
+					"title": label,
 					"subtitle": "Element #1 of an hscroll",
-					"image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+					"image_url": "https://f9a1ba24.ngrok.io/uplus/"+image,
 					"buttons": [{
 						"type": "postback",
 						"title": "Accept Offer",
