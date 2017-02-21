@@ -6,6 +6,7 @@ const request = require('request')
 const app = express()
 
 let offer;
+let customer_id = 'C1000001'
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -49,6 +50,7 @@ app.post('/webhook/', function (req, res) {
 			
 			if (text === 'OFFER_ACCEPTED') {	
 				console.log('Offer data'+JSON.stringify(offer))
+				acceptOffer(offer)
 				sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
@@ -66,6 +68,26 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
+function acceptOffer(offer) {
+	offer.Outcome = "Accepted"
+	request({
+		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
+		method: 'POST',
+		json: {
+			RankedResults: offer,
+			CustomerID:  customer_id,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		} else {
+			sendTextMessage(sender, offer.Label+" activated",token)
+		}
+	})
+}
+
 
 function sendBestOffer(sender) {
 	
@@ -74,7 +96,7 @@ function sendBestOffer(sender) {
 		method: 'POST',
 		json: {
 			ContainerName: "TopOffers",
-			CustomerID:  "C1000001"
+			CustomerID:  customer_id
 		}
 	}, function(error, response, body) {
 		if (error) {
