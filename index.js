@@ -44,7 +44,9 @@ app.post('/webhook/', function (req, res) {
 		}
 		if (event.postback) {
 			let text = event.postback.payload
-			if (text === 'OFFER_ACCEPTED') {
+			let offer = event.postback.offer
+			if (text === 'OFFER_ACCEPTED') {	
+				console.log('Offer data'+JSON.stringify(offer))
 				sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
@@ -80,7 +82,7 @@ function sendBestOffer(sender) {
 		} else {
 			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label));
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
-			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label).replace(/"/g,''), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL).replace(/"/g,''), token)
+			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label).replace(/"/g,''), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL).replace(/"/g,''),response.body.ResponseData.TopOffers.RankedResults[0], token)
 			
 		}
 	})
@@ -110,7 +112,7 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendGenericMessage(sender, label, image) {
+function sendGenericMessage(sender, label, image, offer) {
 	let messageData = {
 		"attachment": {
 			"type": "template",
@@ -123,7 +125,8 @@ function sendGenericMessage(sender, label, image) {
 					"buttons": [{
 						"type": "postback",
 						"title": "Accept Offer",
-            "payload": "OFFER_ACCEPTED"
+            			"payload": "OFFER_ACCEPTED",
+						"offer": offer
 					}, {
 						"type": "postback",
 						"title": "Not interested",
