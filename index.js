@@ -39,17 +39,17 @@ app.post('/webhook/', function (req, res) {
 		if (event.message && event.message.text) {
 			let text = event.message.text
 			if (text === 'Generic'){ 
-				console.log("welcome to chatbot")
+				console.log("Hello, I'm UplusBot. I try to be helpful. (But I'm still just a bot. Sorry!)\n Type something to get started.")
 				//sendGenericMessage(sender)
 				continue
 			} 
 
 			else if(text.indexOf('offer') || text.indexOf('plan') || text.indexOf('deal') ) {
 				sendBestOffer(sender)
-				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 			else {
-				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+				sendTextMessage(sender, "Didn't get that!" + text.substring(0, 200))
 			}
 		}
 		if (event.postback) {
