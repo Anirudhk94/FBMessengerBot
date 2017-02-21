@@ -64,9 +64,9 @@ app.post('/webhook/', function (req, res) {
 
 function sendBestOffer(sender) {
 	var options = {
-		host: 'https://f9a1ba24.ngrok.io/',
+		host: 'f9a1ba24.ngrok.io',
 		port: 443,
-		path: '/prweb/PRRestService/PegaMKTContainer/V1/Container',
+		path: '/prweb/PRRestService/PegaMKTContainer/V2/Container',
 		method: 'POST',
 		ContainerName: "TopOffers",
 		CustomerID: "C1000001"
