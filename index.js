@@ -80,7 +80,7 @@ function sendBestOffer(sender) {
 		} else {
 			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label));
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
-			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label).replaceAll('"',''), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL).replaceAll('"',''), token)
+			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label).replace(/'"'/g,''), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL).replace(/'"'/g,''), token)
 		}
 	})
 }
