@@ -80,6 +80,7 @@ function sendBestOffer(sender) {
 		} else {
 			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label));
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
+			sendTextMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label))
 		}
 	})
 }
