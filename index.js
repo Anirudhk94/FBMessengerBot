@@ -42,9 +42,7 @@ app.post('/webhook/', function (req, res) {
 				console.log("welcome to chatbot")
 				//sendGenericMessage(sender)
 				continue
-			} else if(checkForKeys(text)) {
-				sendBestOffer(sender);
-			}
+			} 
 
 			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 		}
@@ -69,12 +67,12 @@ app.post('/webhook/', function (req, res) {
 				sendBestOffer(sender, "Call");
 			}
 
-			// else {
-			// 	console.log("Text: " + text + " " + JSON.stringify(event.postback))
-			// 	sendTextMessage(sender, text.substring(0, 200), token)
-			// 	sendBestOffer(sender);
-			// 	//sendGenericMessage(sender, token)
-			// }
+			else {
+				console.log("Text: " + text + " " + JSON.stringify(event.postback))
+				sendTextMessage(sender, text.substring(0, 200), token)
+				sendBestOffer(sender);
+				//sendGenericMessage(sender, token)
+			}
 			continue
 		}
 	}
