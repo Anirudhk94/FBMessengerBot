@@ -44,7 +44,7 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			else if(text === 'offer') {
+			else if(text.indexOf('offer') || text.indexOf('plan') || text.indexOf('deal') ) {
 				sendBestOffer(sender)
 				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
