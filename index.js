@@ -87,7 +87,7 @@ function acceptOffer(sender, offer) {
 		method: 'POST',
 		json: {
 			"RankedResults": '['+JSON.stringify(offer)+']',
-			"CustomerID":  '"'+customer_id+'"',
+			"CustomerID":  '"'+customer_id+'"'
 		}
 	}, function(error, response, body) {
 		if (error) {
