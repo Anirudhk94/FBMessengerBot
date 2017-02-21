@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
+let offer;
+
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -44,7 +46,7 @@ app.post('/webhook/', function (req, res) {
 		}
 		if (event.postback) {
 			let text = event.postback.payload
-			let offer = event.postback.offer
+			
 			if (text === 'OFFER_ACCEPTED') {	
 				console.log('Offer data'+JSON.stringify(offer))
 				sendTextMessage(sender, "Offer has been accepted", token)
@@ -80,7 +82,7 @@ function sendBestOffer(sender) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			let offer = response.body.ResponseData.TopOffers.RankedResults[0]
+			offer = response.body.ResponseData.TopOffers.RankedResults[0]
 			console.log("Top Offer"+JSON.stringify(offer));
 			sendGenericMessage(sender, JSON.stringify(offer.Label).replace(/"/g,''), JSON.stringify(offer.ImageURL).replace(/"/g,''), offer, token)
 			
@@ -112,7 +114,8 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendGenericMessage(sender, label, image, offer) {
+function sendGenericMessage(sender, label, image, proposition) {
+	offer = proposition
 	let messageData = {
 		"attachment": {
 			"type": "template",
@@ -126,7 +129,6 @@ function sendGenericMessage(sender, label, image, offer) {
 						"type": "postback",
 						"title": "Accept Offer",
             			"payload": "OFFER_ACCEPTED",
-						"offer": offer
 					}, {
 						"type": "postback",
 						"title": "Not interested",
