@@ -44,7 +44,13 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			else if(text === 'offer') {
+				sendBestOffer(sender)
+				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			}
+			else {
+				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			}
 		}
 		if (event.postback) {
 			let text = event.postback.payload
