@@ -81,11 +81,12 @@ app.post('/webhook/', function (req, res) {
 function acceptOffer(sender, offer) {
 	offer.Outcome = "Accepted"
 	offer.Behaviour = "Positive"
+	console.log("Offer : "+ '['+JSON.stringify(offer)+']')
 	request({
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
 		method: 'POST',
 		json: {
-			RankedResults: '['+offer+']',
+			RankedResults: '['+JSON.stringify(offer)+']',
 			CustomerID:  customer_id,
 		}
 	}, function(error, response, body) {
