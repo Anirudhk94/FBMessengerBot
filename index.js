@@ -42,7 +42,10 @@ app.post('/webhook/', function (req, res) {
 				console.log("welcome to chatbot")
 				//sendGenericMessage(sender)
 				continue
+			} else if(checkForKeys(text)) {
+				sendBestOffer(sender);
 			}
+
 			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 		}
 		if (event.postback) {
@@ -66,18 +69,19 @@ app.post('/webhook/', function (req, res) {
 				sendBestOffer(sender, "Call");
 			}
 
-			else {
-				console.log("Text: " + text + " " + JSON.stringify(event.postback))
-				sendTextMessage(sender, text.substring(0, 200), token)
-				sendBestOffer(sender);
-				//sendGenericMessage(sender, token)
-			}
+			// else {
+			// 	console.log("Text: " + text + " " + JSON.stringify(event.postback))
+			// 	sendTextMessage(sender, text.substring(0, 200), token)
+			// 	sendBestOffer(sender);
+			// 	//sendGenericMessage(sender, token)
+			// }
 			continue
 		}
 	}
 	res.sendStatus(200)
 })
 
+//This function initiates an interaction with CS and activates the offer 
 function acceptOffer(sender, offer) {
 	offer.Outcome = "Accepted"
 	offer.Behaviour = "Positive"
@@ -117,7 +121,7 @@ function acceptOffer(sender, offer) {
 	})
 }
 
-
+//Retrives the best offer for a specific type - voice/sms/data
 function sendBestOffer(sender, type) {
 	
 	request({
@@ -256,7 +260,11 @@ function sendOptions(sender) {
 
 //This function checks if the entered string has 'Offer', 'Plans' or 'Deals'
 function checkForKeys(message) {
+	off = message.indexOf('offer');
+	plan = message.indexOf('plan');
+	deal = message.indexOf('deal');
 
+	return off || plan || deal;
 }
 
 // spin spin sugar
