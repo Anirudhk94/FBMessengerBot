@@ -197,12 +197,12 @@ function sendOptions(sender) {
 				"text":"What kind of offers are you looking for?",
 				"buttons":[
 					{
-						"type":"web_url",
+						"type":"postback",
 						"payload":"DATA_OFFERS",
 						"title":"Data"
 					},
 					{
-						"type":"web_url",
+						"type":"postback",
 						"payload":"SMS_OFFERS",
 						"title":"SMS"
 					},
