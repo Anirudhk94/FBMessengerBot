@@ -56,6 +56,16 @@ app.post('/webhook/', function (req, res) {
 			else if (text === 'OFFER_REJECTED') {
 				sendOptions(sender);
 			}
+			else if (text === 'DATA_OFFERS') {
+				sendBestOffer(sender, "Data");
+			}
+			else if (text === 'SMS_OFFERS') {
+				sendBestOffer(sender, "Message");
+			}
+			else if (text === 'VOICE_OFFERS') {
+				sendBestOffer(sender, "Call");
+			}
+
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
@@ -89,14 +99,15 @@ function acceptOffer(sender, offer) {
 }
 
 
-function sendBestOffer(sender) {
+function sendBestOffer(sender, type) {
 	
 	request({
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V2/Container',
 		method: 'POST',
 		json: {
 			ContainerName: "TopOffers",
-			CustomerID:  customer_id
+			CustomerID:  customer_id,
+			Resource: type
 		}
 	}, function(error, response, body) {
 		if (error) {
@@ -187,18 +198,18 @@ function sendOptions(sender) {
 				"buttons":[
 					{
 						"type":"web_url",
-						"url":"https://petersapparel.parseapp.com",
+						"payload":"DATA_OFFERS",
 						"title":"Data"
 					},
 					{
 						"type":"web_url",
-						"url":"https://petersapparel.parseapp.com",
+						"payload":"SMS_OFFERS",
 						"title":"SMS"
 					},
 					{
 						"type":"postback",
 						"title":"Voice",
-						"payload":"Call"
+						"payload":"VOICE_OFFERS"
 					}
 				]
 			}
