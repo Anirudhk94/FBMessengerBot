@@ -79,7 +79,7 @@ function sendBestOffer(sender) {
 			console.log('Error: ', response.body.error)
 		} else {
 			console.log(response.body.ResponseData);
-			console.log("Parsed data"+JSON.parse(response.body.ResponseData));
+			console.log("Parsed data"+JSON.stringify(response.body.ResponseData));
 		}
 	})
 }
