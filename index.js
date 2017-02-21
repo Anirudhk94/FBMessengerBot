@@ -53,7 +53,7 @@ app.post('/webhook/', function (req, res) {
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
-				//sendBestOffer(sender);
+				sendBestOffer(sender);
 				sendGenericMessage(sender, token)
 			}
 			continue
@@ -62,48 +62,26 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
-var http = require('http');
-var options = {
-  host: 'www.random.org',
-  path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
-};
 
-var callback = function(response) {
-  var str = '';
-
-  //another chunk of data has been recieved, so append it to `str`
-  response.on('data', function (chunk) {
-    str += chunk;
-  });
-
-  //the whole response has been recieved, so we just print it out here
-  response.on('end', function () {
-    console.log(str);
-  });
+function sendBestOffer(sender) {
+	
+	request({
+		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V2/Container',
+		method: 'POST',
+		json: {
+			ContainerName: "TopOffers",
+			CustomerID:  "C1000001"
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		} else {
+			console.log(response);
+		}
+	})
 }
-
-http.request(options, callback).end();
-
-
-// function sendBestOffer(sender) {
-// 	var options = {
-// 		host: 'f9a1ba24.ngrok.io',
-// 		port: 443,
-// 		path: '/prweb/PRRestService/PegaMKTContainer/V2/Container',
-// 		method: 'POST',
-// 		ContainerName: "TopOffers",
-// 		CustomerID: "C1000001"
-// 	};
-
-// 	http.request(options, function(res) {
-// 		console.log('STATUS: ' + res.statusCode);
-// 		console.log('HEADERS: ' + JSON.stringify(res.headers));
-// 		res.setEncoding('utf8');
-// 		res.on('data', function (chunk) {
-// 			console.log('BODY: ' + chunk);
-// 		});
-// 	}).end();
-// }
 
 // recommended to inject access tokens as environmental variables, e.g.
 // const token = process.env.FB_PAGE_ACCESS_TOKEN
