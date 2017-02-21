@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
-				sendTextMessage(sender, "Offer has been rejected", token)
+				sendOptions(sender);
 			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
@@ -81,7 +81,7 @@ function sendBestOffer(sender) {
 			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label));
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
 			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label).replace(/"/g,''), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL).replace(/"/g,''), token)
-			sendOptions(sender);
+			
 		}
 	})
 }
@@ -126,7 +126,7 @@ function sendGenericMessage(sender, label, image) {
             "payload": "OFFER_ACCEPTED"
 					}, {
 						"type": "postback",
-						"title": "Reject Offer",
+						"title": "Not interested",
 						"payload": "OFFER_REJECTED",
 					}],
 				}]
@@ -170,7 +170,7 @@ function sendOptions(sender) {
 					},
 					{
 						"type":"postback",
-						"title":"Start Chatting",
+						"title":"Voice",
 						"payload":"Call"
 					}
 				]
