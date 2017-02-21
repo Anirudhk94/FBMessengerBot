@@ -68,7 +68,7 @@ var options = {
   path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
 };
 
-callback = function(response) {
+var callback = function(response) {
   var str = '';
 
   //another chunk of data has been recieved, so append it to `str`
