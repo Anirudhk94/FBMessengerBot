@@ -86,8 +86,8 @@ function acceptOffer(sender, offer) {
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
 		method: 'POST',
 		json: {
-			"RankedResults": '['+JSON.stringify(offer)+']',
-			"CustomerID":  '"'+customer_id+'"'
+			RankedResults: '['+JSON.stringify(offer)+']',
+			CustomerID:  customer_id
 		}
 	}, function(error, response, body) {
 		if (error) {
@@ -95,9 +95,9 @@ function acceptOffer(sender, offer) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			
 			sendTextMessage(sender, offer.Label+" activated",token)
 			console.log("Status : "+response.Status+"Message : "+response.Message)
+			console.log(request);
 		}
 	})
 }
