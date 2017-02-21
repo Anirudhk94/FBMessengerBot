@@ -53,6 +53,7 @@ app.post('/webhook/', function (req, res) {
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
+				sendBestOffer(sender);
 				sendGenericMessage(sender, token)
 			}
 			continue
@@ -61,6 +62,25 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
+function sendBestOffer(sender) {
+	var options = {
+		host: 'https://f9a1ba24.ngrok.io/',
+		port: 443,
+		path: '/prweb/PRRestService/PegaMKTContainer/V1/Container',
+		method: 'POST',
+		ContainerName: "TopOffers",
+		CustomerID: "C1000001"
+	};
+
+	http.request(options, function(res) {
+		console.log('STATUS: ' + res.statusCode);
+		console.log('HEADERS: ' + JSON.stringify(res.headers));
+		res.setEncoding('utf8');
+		res.on('data', function (chunk) {
+			console.log('BODY: ' + chunk);
+		});
+	}).end();
+}
 
 // recommended to inject access tokens as environmental variables, e.g.
 // const token = process.env.FB_PAGE_ACCESS_TOKEN
