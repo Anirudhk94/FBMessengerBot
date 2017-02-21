@@ -85,11 +85,8 @@ function acceptOffer(sender, offer) {
 	request({
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
 		method: 'POST',
-		json: {
-			RankedResults: '['+JSON.stringify(offer)+']',
-			CustomerID:  customer_id
-		}
-	}, function(error, response, body) {
+		json: {"CustomerID":"C1000001","RankedResults":[{"GroupName":"","Group":"Preemptive","OneTimeCost":null,"Issue":"Retention","InteractionID":"9208017170989329744","Category":"","CustomerCost":30,"MonthlyRecurringCost":null,"Label":"4G Free Trial","Benefits":"Customer will have advantage of 4G data service at lower cost in bundles","WhyRelevant":"Based on customer data usage, 4G free trial is recommended","Direction":"Inbound","Name":"DataPlanMB","ShortDescription":"4G data pack to enjoy fast downloads.","Identifier":"/Retention/Preemptive/DataPlanMB","Pricing":"4G Data Pack at reduced prices","OneTimeBudgetedCost":null,"EligibilityDescription":"High CLV customer","Propensity":0.99,"AgentCompensation":1,"ClassIdentifier":"Offer","Priority":0.99,"Channel":"Call Center","BundleName":"","ImageURL":"webwb/Data4G.png","Rank":1,"BundleParent":"false","Variant":"","Treatment":"Proactive Retention","InternalCost":null,"CampaignID":"NBA","OfferValue":null,"NegotiationCost":null,"ClickThroughURL":"","MarginAmount":0,"Outcome":"Accepted","Behaviour":"Positive"}]}
+		}, function(error, response, body) {
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
