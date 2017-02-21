@@ -94,7 +94,9 @@ function acceptOffer(sender, offer) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
+			
 			sendTextMessage(sender, offer.Label+" activated",token)
+			console.log("Status : "+response.Status+"Message : "+response.Message)
 		}
 	})
 }
