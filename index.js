@@ -81,6 +81,7 @@ function sendBestOffer(sender) {
 			console.log("Top Offer"+JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label));
 			console.log("Parsed data"+JSON.stringify(response.body.ResponseData.RankedResults));
 			sendGenericMessage(sender, JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].Label).replace(/"/g,''), JSON.stringify(response.body.ResponseData.TopOffers.RankedResults[0].ImageURL).replace(/"/g,''), token)
+			sendOptions(sender);
 		}
 	})
 }
@@ -129,6 +130,50 @@ function sendGenericMessage(sender, label, image) {
 						"payload": "OFFER_REJECTED",
 					}],
 				}]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+function sendOptions(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text":"What kind of offers are you looking for?",
+				"buttons":[
+					{
+						"type":"web_url",
+						"url":"https://petersapparel.parseapp.com",
+						"title":"Data"
+					},
+					{
+						"type":"web_url",
+						"url":"https://petersapparel.parseapp.com",
+						"title":"SMS"
+					},
+					{
+						"type":"postback",
+						"title":"Start Chatting",
+						"payload":"Call"
+					}
+				]
 			}
 		}
 	}
