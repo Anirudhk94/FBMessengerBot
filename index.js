@@ -45,12 +45,21 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') ) {
+			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan') ) {
 				sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
 				sendBestOffer(sender)
-				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
+				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
+
+			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') ) {
+				initiateSurvey(sender)
+				sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
+				sendBestOffer(sender)
+				// sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
+				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			}
+
 			else {
 				sendTextMessage(sender, "Sorry, I Didn't get that!", token)
 			}
@@ -60,27 +69,27 @@ app.post('/webhook/', function (req, res) {
 			
 			if (text === 'OFFER_ACCEPTED') {	
 				console.log('Offer data'+JSON.stringify(offer))
-				offerDecision(sender, offer, "Accepted")
+				offerDecision(sender, offer, "Accepted", "Positive")
 				//sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
-				offerDecision(sender, offer, "Rejected")
+				offerDecision(sender, offer, "Rejected", "Negative")
 				sendOptions(sender);
 			}
 			else if (text === 'DATA_OFFERS') {
 				sendTextMessage(sender, "Let me check what kind of data offers I have got in store for you.", token)
 				sendBestOffer(sender, "Data");
-				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this data offer.", token)
+				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this data offer.", token)
 			}
 			else if (text === 'SMS_OFFERS') {
 				sendTextMessage(sender, "Let me check what kind of texting offers I have got in store for you.", token)
 				sendBestOffer(sender, "Message");
-				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this texting offer.", token)
+				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this texting offer.", token)
 			}
 			else if (text === 'VOICE_OFFERS') {
 				sendTextMessage(sender, "Let me check what kind of voice offers I have got in store for you.", token)
 				sendBestOffer(sender, "Call");
-				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this voice offer.", token)
+				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this voice offer.", token)
 			}
 			else if (text == 'OFFER_RELEVANCE') {
 				sendTextMessage(sender, JSON.stringify(offer.EligibilityDescription).replace(/"/g,''), token)
@@ -98,10 +107,68 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
+// Send survey to the customer to know his issues/preferences
+function initiateSurvey(sender) {
+	questions = [ 
+					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
+					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
+					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"}
+				]
+	for(var i = 0 ; i < questions.length ; i++) {
+		sendQuestion(sender, questions[i]);
+	} 
+}
+
+// Send question to the customer/user
+function sendQuestion(sender, question) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": question.text,
+				"buttons":[
+					{
+						"type":"postback",
+						"payload": question.option1,
+						"title": question.option1
+					},
+					{
+						"type":"postback",
+						"payload": question.option2,
+						"title": question.option2
+					},
+					{
+						"type":"postback",
+						"title": question.option3,
+						"payload": question.option3
+					}
+				]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+
 // This function initiates an interaction with CS and activates the offer 
-function offerDecision(sender, offer, outcome) {
+function offerDecision(sender, offer, outcome, behaviour) {
 	offer.Outcome = outcome
-	offer.Behaviour = "Positive"
+	offer.Behaviour = behaviour
 	console.log("Offer : "+ '['+JSON.stringify(offer)+']'+"    customer id   :"+customer_id)
 	request({
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
