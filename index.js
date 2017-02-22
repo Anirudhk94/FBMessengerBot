@@ -8,9 +8,9 @@ const app = express()
 let offer;
 let customer_id = 'C1000001'
 let questions = [ 
-					{ key : "ReasonForLeaving" text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive offer", option2 : "Too expensive", option3 : "Poor coverage"},
-					{ key : "SelectOperator" text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
-					{ key : "Interests" text : "What interests you most about them?", option1 : "They have a great promotion", option2 : "They have a really good network", option3 : "They are economical"}
+					{ key : "ReasonForLeaving", text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive offer", option2 : "Too expensive", option3 : "Poor coverage"},
+					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
+					{ key : "Interests", text : "What interests you most about them?", option1 : "They have a great promotion", option2 : "They have a really good network", option3 : "They are economical"}
 				];
 
 app.set('port', (process.env.PORT || 5000))
@@ -99,14 +99,16 @@ app.post('/webhook/', function (req, res) {
 			else if (text == 'OFFER_RELEVANCE') {
 				sendTextMessage(sender, JSON.stringify(offer.EligibilityDescription).replace(/"/g,''), token)
 			}
-			else if (text == 'ReasonForLeaving') {
+			else if (text == 'Competitive offer') {
+				sendTextMessage(sender, "Competitive offer")
 				sendQuestion(sender, questions[1])
 			}
-			else if (text == 'SelectOperator') {
+			else if (text == 'Chat Chat') {
+				sendTextMessage(sender, "Chat Chat")
 				sendQuestion(sender, questions[2])
 			}
-			else if (text == 'Interests' ) {
-				
+			else if (text == 'They have a really good network' ) {
+				sendTextMessage(sender, "They have a really good network")
 			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
@@ -136,18 +138,19 @@ function sendQuestion(sender, question) {
 				"buttons":[
 					{
 						"type":"postback",
-						"payload": question.key,
+						"payload": question.option1,
 						"title": question.option1
 					},
 					{
 						"type":"postback",
-						"payload": question.key,
+						"payload": question.option2,
 						"title": question.option2
 					},
 					{
 						"type":"postback",
-						"title": question.option3,
-						"payload": question.key
+						"payload": question.option3,
+						"title": question.option3
+						
 					}
 				]
 			}
