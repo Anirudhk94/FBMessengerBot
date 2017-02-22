@@ -151,7 +151,11 @@ function sendValueStatements(sender, ans1, ans2, ans3) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			console.log("Value statements   ****************  "+JSON.stringify(response));			
+			console.log("Value statements   ****************  "+JSON.stringify(response));
+			valueStatements = response.body.ResponseData.ValueStatements.RankedResults
+			for(var i = 0 ; i < 3 ; i++ ) {
+				sendTextMessage(sender, JSON.stringify(ValueStatements[i].ShortDescription), token)
+			}			
 		}
 	})
 }
