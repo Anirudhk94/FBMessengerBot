@@ -118,10 +118,10 @@ app.post('/webhook/', function (req, res) {
 				sendValueStatements(sender, q1ans, q2ans, q3ans)
 			}
 			else if (text === 'HAPPY_CUSTOMER') {
-				sendTextMessage(sender, "Thank You! It was a pleasure serving you.")
+				sendTextMessage(sender, "Thank You! It was a pleasure serving you.", token)
 			}
 			else if (text === 'UNHAPPY_CUSTOMER') {
-				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.")
+				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
 			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
