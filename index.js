@@ -54,8 +54,8 @@ app.post('/webhook/', function (req, res) {
 
 			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') ) {
 				initiateSurvey(sender)
-				sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
-				sendBestOffer(sender)
+				//sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
+				//sendBestOffer(sender)
 				// sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
@@ -113,7 +113,7 @@ function initiateSurvey(sender) {
 					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
 					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
 					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"}
-				]
+				];
 	for(var i = 0 ; i < questions.length ; i++) {
 		sendQuestion(sender, questions[i]);
 	} 
