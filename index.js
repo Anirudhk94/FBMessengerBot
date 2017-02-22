@@ -61,7 +61,7 @@ app.post('/webhook/', function (req, res) {
 			}
 
 			else {
-				sendTextMessage(sender, "Sorry, I Didn't get that!", token)
+				sendTextMessage(sender, "Sorry, I didn't get that!", token)
 			}
 		}
 		if (event.postback) {
@@ -109,7 +109,7 @@ app.post('/webhook/', function (req, res) {
 
 // Send survey to the customer to know his issues/preferences
 function initiateSurvey(sender) {
-	questions = [ 
+	let questions = [ 
 					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
 					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
 					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"}
