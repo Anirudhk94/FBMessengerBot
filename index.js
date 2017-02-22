@@ -38,6 +38,7 @@ app.post('/webhook/', function (req, res) {
 		let sender = event.sender.id
 		if (event.message && event.message.text) {
 			let text = event.message.text
+			console.log("User details   :    "+sender)
 			if (text === 'Generic'){ 
 				console.log("Hello, I'm UplusBot. I try to be helpful. (But I'm still just a bot. Sorry!)\n Type something to get started.")
 				//sendGenericMessage(sender)
@@ -51,7 +52,7 @@ app.post('/webhook/', function (req, res) {
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 			else {
-				sendTextMessage(sender, "Sorry, I Didn't get that!" + text.substring(0, 200))
+				sendTextMessage(sender, "Sorry, I Didn't get that!", token)
 			}
 		}
 		if (event.postback) {
@@ -59,10 +60,11 @@ app.post('/webhook/', function (req, res) {
 			
 			if (text === 'OFFER_ACCEPTED') {	
 				console.log('Offer data'+JSON.stringify(offer))
-				acceptOffer(sender, offer)
+				offerDecision(sender, offer, "Accepted")
 				//sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
+				offerDecision(sender, offer, "Rejected")
 				sendOptions(sender);
 			}
 			else if (text === 'DATA_OFFERS') {
@@ -97,8 +99,8 @@ app.post('/webhook/', function (req, res) {
 })
 
 // This function initiates an interaction with CS and activates the offer 
-function acceptOffer(sender, offer) {
-	offer.Outcome = "Accepted"
+function offerDecision(sender, offer, outcome) {
+	offer.Outcome = outcome
 	offer.Behaviour = "Positive"
 	console.log("Offer : "+ '['+JSON.stringify(offer)+']'+"    customer id   :"+customer_id)
 	request({
