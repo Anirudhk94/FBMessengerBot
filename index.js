@@ -7,6 +7,11 @@ const app = express()
 
 let offer;
 let customer_id = 'C1000001'
+let questions = [ 
+					{ key : "ReasonForLeaving" text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive offer", option2 : "Too expensive", option3 : "Poor coverage"},
+					{ key : "SelectOperator" text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
+					{ key : "Interests" text : "What interests you most about them?", option1 : "They have a great promotion", option2 : "They have a really good network", option3 : "They are economical"}
+				];
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -94,7 +99,15 @@ app.post('/webhook/', function (req, res) {
 			else if (text == 'OFFER_RELEVANCE') {
 				sendTextMessage(sender, JSON.stringify(offer.EligibilityDescription).replace(/"/g,''), token)
 			}
-
+			else if (text == 'ReasonForLeaving') {
+				sendQuestion(sender, questions[1])
+			}
+			else if (text == 'SelectOperator') {
+				sendQuestion(sender, questions[2])
+			}
+			else if (text == 'Interests' ) {
+				
+			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
@@ -109,14 +122,7 @@ app.post('/webhook/', function (req, res) {
 
 // Send survey to the customer to know his issues/preferences
 function initiateSurvey(sender) {
-	let questions = [ 
-					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
-					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"},
-					{ text : "What is the issue?", option1 : "One", option2 : "Two", option3 : "Three"}
-				];
-	for(var i = 0 ; i < questions.length ; i++) {
-		sendQuestion(sender, questions[i]);
-	} 
+	sendQuestion(sender, questions[0]);
 }
 
 // Send question to the customer/user
@@ -130,18 +136,18 @@ function sendQuestion(sender, question) {
 				"buttons":[
 					{
 						"type":"postback",
-						"payload": question.option1,
+						"payload": question.key,
 						"title": question.option1
 					},
 					{
 						"type":"postback",
-						"payload": question.option2,
+						"payload": question.key,
 						"title": question.option2
 					},
 					{
 						"type":"postback",
 						"title": question.option3,
-						"payload": question.option3
+						"payload": question.key
 					}
 				]
 			}
