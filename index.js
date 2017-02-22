@@ -8,7 +8,7 @@ const app = express()
 let offer;
 let customer_id = 'C1000001'
 let questions = [ 
-					{ key : "ReasonForLeaving", text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive offer", option2 : "Too expensive", option3 : "Poor coverage"},
+					{ key : "ReasonForLeaving", text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
 					{ key : "Interests", text : "What interests you most about them?", option1 : "Great promotion", option2 : "Good network", option3 : "Economical"}
 				];
@@ -102,7 +102,7 @@ app.post('/webhook/', function (req, res) {
 			else if (text === 'OFFER_RELEVANCE') {
 				sendTextMessage(sender, JSON.stringify(offer.EligibilityDescription).replace(/"/g,''), token)
 			}
-			else if (text === 'Competitive offer' || text === 'Too expensive' || text === 'Poor coverage') {
+			else if (text === 'Competitive Offer' || text === 'Too Expensive' || text === 'Poor Coverage') {
 				//sendTextMessage(sender, "Competitive offer")
 				q1ans = text
 				sendQuestion(sender, questions[1])
@@ -154,11 +154,53 @@ function sendValueStatements(sender, ans1, ans2, ans3) {
 			console.log("Value statements   ****************  "+JSON.stringify(response));
 			let valueStatements = response.body.ResponseData.ValueStatements.RankedResults
 			for(var i = 0 ; i < 3 ; i++ ) {
-				sendTextMessage(sender, JSON.stringify(valueStatements[i].ShortDescription), token)
-			}			
+				sendTextMessage(sender, JSON.stringify(valueStatements[i].ShortDescription).replace(/"/g,''), token)
+			}
+			postVSurvey(sender)
 		}
 	})
 }
+
+// Survey that is to be conducted post sending value statements
+function postVSurvey(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": "Do you want to continue with the existing plan?",
+				"buttons":[
+					{
+						"type":"postback",
+						"payload": "HAPPY_CUSTOMER",
+						"title": "Yes"
+					},
+					{
+						"type":"postback",
+						"payload": "UNHAPPY_CUSTOMER",
+						"title": "No"
+					}
+				]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
 
 // Send survey to the customer to know his issues/preferences
 function initiateSurvey(sender) {
@@ -274,7 +316,6 @@ function sendBestOffer(sender, type) {
 			offer = response.body.ResponseData.TopOffers.RankedResults[0]
 			console.log("Top Offer"+JSON.stringify(offer));
 			sendGenericMessage(sender, JSON.stringify(offer.Label).replace(/"/g,''), JSON.stringify(offer.ImageURL).replace(/"/g,''), JSON.stringify(offer.ShortDescription).replace(/"/g,''), offer, token)
-			
 		}
 	})
 }
