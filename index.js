@@ -282,7 +282,9 @@ function offerDecision(sender, offer, outcome, behaviour) {
 					"Channel":"Call Center",
 					"Rank":1,
 					"Treatment":"Proactive Retention",
-					"CampaignID":"NBA"
+					"CampaignID":"NBA",
+					"Outcome": outcome,
+					"Behaviour": behaviour
 				}
 			]}
 		}, function(error, response, body) {
