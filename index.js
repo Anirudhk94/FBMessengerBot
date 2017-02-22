@@ -12,6 +12,9 @@ let questions = [
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
 					{ key : "Interests", text : "What interests you most about them?", option1 : "Great promotion", option2 : "Good network", option3 : "Economical"}
 				];
+let q1ans;
+let q2ans;
+let q3ans;
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -57,7 +60,7 @@ app.post('/webhook/', function (req, res) {
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 
-			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') ) {
+			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') ) {
 				initiateSurvey(sender)
 				//sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
 				//sendBestOffer(sender)
@@ -96,20 +99,23 @@ app.post('/webhook/', function (req, res) {
 				sendBestOffer(sender, "Call");
 				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this voice offer.", token)
 			}
-			else if (text == 'OFFER_RELEVANCE') {
+			else if (text === 'OFFER_RELEVANCE') {
 				sendTextMessage(sender, JSON.stringify(offer.EligibilityDescription).replace(/"/g,''), token)
 			}
-			else if (text == 'Competitive offer') {
+			else if (text === 'Competitive offer' || text === 'Too expensive' || text === 'Poor coverage') {
 				//sendTextMessage(sender, "Competitive offer")
+				q1ans = text
 				sendQuestion(sender, questions[1])
 			}
-			else if (text == 'Chat Chat') {
+			else if (text === 'Chat Chat' || text === 'Value Communications' || text === 'Communiko') {
 				//sendTextMessage(sender, "Chat Chat")
+				q2ans = text
 				sendQuestion(sender, questions[2])
 			}
-			else if (text == 'Good network' ) {
+			else if (text === 'Great promotion' || text === 'Good network' || text === 'Economical') {
 				//sendTextMessage(sender, "Thanks for the survey! Our CSR will get back to resolve your issue")
-				sendValueStatements(sender)
+				q3ans = text
+				sendValueStatements(sender, q1ans, q2ans, q3ans)
 			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
@@ -124,7 +130,7 @@ app.post('/webhook/', function (req, res) {
 })
 
 // Retrives the best offer for a specific type - voice/sms/data
-function sendValueStatements(sender) {
+function sendValueStatements(sender, ans1, ans2, ans3) {
 	
 	request({
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V2/Container',
@@ -134,9 +140,9 @@ function sendValueStatements(sender) {
 			"Channel" : "CallCenter",
 			"CustomerID" : "C1000001",
 			"Direction" : "Inbound",
-			"Contexts": [ {"Type":"QnA","Value":"Competitive Offer","Key":"ReasonForLeaving"},
-						  {"Type":"QnA","Value":"Chat Chat","Key":"SelectOperator"},
-						  {"Type":"QnA","Value":"Good network","Key":"Interests"} ], 
+			"Contexts": [ {"Type" : "QnA", "Value" : ans1, "Key" : "ReasonForLeaving"},
+						  {"Type" : "QnA", "Value" : ans2, "Key" : "SelectOperator"},
+						  {"Type" : "QnA", "Value" : ans3, "Key" : "Interests"} ], 
 			"PartyType":"" 
 		}
 	}, function(error, response, body) {
@@ -263,7 +269,7 @@ function sendBestOffer(sender, type) {
 		} else {
 			offer = response.body.ResponseData.TopOffers.RankedResults[0]
 			console.log("Top Offer"+JSON.stringify(offer));
-			sendGenericMessage(sender, JSON.stringify(offer.Label).replace(/"/g,''), JSON.stringify(offer.ImageURL).replace(/"/g,''), offer, token)
+			sendGenericMessage(sender, JSON.stringify(offer.Label).replace(/"/g,''), JSON.stringify(offer.ImageURL).replace(/"/g,''), JSON.stringify(offer.ShortDescription).replace(/"/g,''), offer, token)
 			
 		}
 	})
@@ -295,7 +301,7 @@ function sendTextMessage(sender, text) {
 }
 
 // This function displays an offer to the user
-function sendGenericMessage(sender, label, image, proposition) {
+function sendGenericMessage(sender, label, image, desc, proposition) {
 	offer = proposition
 	let messageData = {
 		"attachment": {
@@ -304,7 +310,7 @@ function sendGenericMessage(sender, label, image, proposition) {
 				"template_type": "generic",
 				"elements": [{
 					"title": label,
-					"subtitle": "Element #1 of an hscroll",
+					"subtitle": desc,
 					"image_url": "https://f9a1ba24.ngrok.io/uplus/"+image,
 					"buttons": [{
 						"type": "postback",
