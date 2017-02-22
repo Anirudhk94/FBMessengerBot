@@ -182,6 +182,11 @@ function postVSurvey(sender) {
 						"title": "Yes"
 					},
 					{
+						"type":"postback",
+						"payload": "UNHAPPY_CUSTOMER",
+						"title": "No"
+					},
+					{
 						"type":"phone_number",
 						"payload": "+918466975975",
 						"title": "Call Representative"
