@@ -108,7 +108,8 @@ app.post('/webhook/', function (req, res) {
 				sendQuestion(sender, questions[2])
 			}
 			else if (text == 'Good network' ) {
-				sendTextMessage(sender, "Thanks for the survey! Our CSR will get back to resolve your issue")
+				//sendTextMessage(sender, "Thanks for the survey! Our CSR will get back to resolve your issue")
+				sendValueStatements()
 			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
@@ -121,6 +122,33 @@ app.post('/webhook/', function (req, res) {
 	}
 	res.sendStatus(200)
 })
+
+// Retrives the best offer for a specific type - voice/sms/data
+function sendValueStatements(sender) {
+	
+	request({
+		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V2/Container',
+		method: 'POST',
+		json: {
+			"ContainerName" : "ValueStatements",
+			"Channel" : "CallCenter",
+			"CustomerID" : "C1000001",
+			"Direction" : "Inbound",
+			"Contexts": [ {"Type":"QnA","Value":"Competitive Offer","Key":"ReasonForLeaving"},
+						  {"Type":"QnA","Value":"Chat Chat","Key":"SelectOperator"},
+						  {"Type":"QnA","Value":"Good network","Key":"Interests"} ], 
+			"PartyType":"" 
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		} else {
+			console.log("Value statements   ****************  "+JSON.stringify(response));			
+		}
+	})
+}
 
 // Send survey to the customer to know his issues/preferences
 function initiateSurvey(sender) {
