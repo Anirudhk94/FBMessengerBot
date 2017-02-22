@@ -109,7 +109,7 @@ app.post('/webhook/', function (req, res) {
 			}
 			else if (text == 'Good network' ) {
 				//sendTextMessage(sender, "Thanks for the survey! Our CSR will get back to resolve your issue")
-				sendValueStatements()
+				sendValueStatements(sender)
 			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
