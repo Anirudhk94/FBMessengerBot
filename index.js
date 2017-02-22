@@ -38,7 +38,7 @@ app.post('/webhook/', function (req, res) {
 		let sender = event.sender.id
 		if (event.message && event.message.text) {
 			let text = event.message.text
-			console.log("User details   :    "+sender)
+			console.log("User details   :    "+JSON.stringify(sender))
 			if (text === 'Generic'){ 
 				console.log("Hello, I'm UplusBot. I try to be helpful. (But I'm still just a bot. Sorry!)\n Type something to get started.")
 				//sendGenericMessage(sender)
@@ -131,7 +131,9 @@ function offerDecision(sender, offer, outcome) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			sendTextMessage(sender, offer.Label+" activated",token)
+			if(outcome === "Accepted") {
+				sendTextMessage(sender, offer.Label+" activated",token)
+			}
 			console.log("Status : "+response.Status+"Message : "+response.Message)
 			console.log(request);
 		}
