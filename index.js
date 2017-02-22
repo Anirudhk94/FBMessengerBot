@@ -44,12 +44,14 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			else if(text.indexOf('offer') || text.indexOf('plan') || text.indexOf('deal') ) {
+			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') ) {
+				sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
 				sendBestOffer(sender)
+				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 			else {
-				sendTextMessage(sender, "Didn't get that!" + text.substring(0, 200))
+				sendTextMessage(sender, "Sorry, I Didn't get that!" + text.substring(0, 200))
 			}
 		}
 		if (event.postback) {
@@ -58,19 +60,28 @@ app.post('/webhook/', function (req, res) {
 			if (text === 'OFFER_ACCEPTED') {	
 				console.log('Offer data'+JSON.stringify(offer))
 				acceptOffer(sender, offer)
-				sendTextMessage(sender, "Offer has been accepted", token)
+				//sendTextMessage(sender, "Offer has been accepted", token)
 			}
 			else if (text === 'OFFER_REJECTED') {
 				sendOptions(sender);
 			}
 			else if (text === 'DATA_OFFERS') {
+				sendTextMessage(sender, "Let me check what kind of data offers I have got in store for you.", token)
 				sendBestOffer(sender, "Data");
+				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this data offer.", token)
 			}
 			else if (text === 'SMS_OFFERS') {
+				sendTextMessage(sender, "Let me check what kind of texting offers I have got in store for you.", token)
 				sendBestOffer(sender, "Message");
+				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this texting offer.", token)
 			}
 			else if (text === 'VOICE_OFFERS') {
+				sendTextMessage(sender, "Let me check what kind of voice offers I have got in store for you.", token)
 				sendBestOffer(sender, "Call");
+				sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this voice offer.", token)
+			}
+			else if (text == 'OFFER_RELEVANCE') {
+				sendTextMessage(sender, JSON.stringify(offer.EligibilityDescription).replace(/"/g,''), token)
 			}
 
 			else {
@@ -85,7 +96,7 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
-//This function initiates an interaction with CS and activates the offer 
+// This function initiates an interaction with CS and activates the offer 
 function acceptOffer(sender, offer) {
 	offer.Outcome = "Accepted"
 	offer.Behaviour = "Positive"
@@ -125,7 +136,7 @@ function acceptOffer(sender, offer) {
 	})
 }
 
-//Retrives the best offer for a specific type - voice/sms/data
+// Retrives the best offer for a specific type - voice/sms/data
 function sendBestOffer(sender, type) {
 	
 	request({
@@ -154,7 +165,7 @@ function sendBestOffer(sender, type) {
 // const token = process.env.FB_PAGE_ACCESS_TOKEN
 const token = "EAADttZCnpsAcBAD0GqqC6zCY1ZCDMMZA8zLQ6KFD0ul7w4NQsoiR8dY8N0LlVZCiGNcYZC0v6kAcFj3fDVBrn4iBnKzFfn56tflYTT8qRlTP8aH5AmG3WlKkvpeB7ssO2yjteoPmGy01gnYZCoU48tGQPRrzL8YcA2dlImW8j3uQZDZD"
 
-//This function sends a text message to the user
+// This function sends a text message to the user
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
 	
@@ -175,7 +186,7 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-//This function displays an offer to the user
+// This function displays an offer to the user
 function sendGenericMessage(sender, label, image, proposition) {
 	offer = proposition
 	let messageData = {
@@ -195,6 +206,10 @@ function sendGenericMessage(sender, label, image, proposition) {
 						"type": "postback",
 						"title": "Not interested",
 						"payload": "OFFER_REJECTED",
+					}, {
+						"type": "postback",
+						"title": "Why am I seeing this?",
+						"payload": "OFFER_RELEVANCE",
 					}],
 				}]
 			}
@@ -217,7 +232,7 @@ function sendGenericMessage(sender, label, image, proposition) {
 	})
 }
 
-//This function conducts survey to know customer preferences - Data/Voice/SMS
+// This function conducts survey to know customer preferences - Data/Voice/SMS
 function sendOptions(sender) {
 	let messageData = {
 		"attachment": {
@@ -260,15 +275,6 @@ function sendOptions(sender) {
 			console.log('Error: ', response.body.error)
 		}
 	})
-}
-
-//This function checks if the entered string has 'Offer', 'Plans' or 'Deals'
-function checkForKeys(message) {
-	off = message.indexOf('offer');
-	plan = message.indexOf('plan');
-	deal = message.indexOf('deal');
-
-	return off || plan || deal;
 }
 
 // spin spin sugar
