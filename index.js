@@ -215,10 +215,12 @@ function sendRecommendedBundle(sender, bundle) {
 			console.log('Error: ', response.body.error)
 		} else {
 			//setTimeout(2000);
+			sendTextMessage(sender,"Total pay(now) : "+totalPayNow)+" Total pay(monthly) : "+totalPayMonthly)
 			bundleDecision(sender, bundle);
 		}
 	})
 }
+
 
 // Enquiry about the bundle 
 function bundleDecision(sender, bundle) {
@@ -227,7 +229,7 @@ function bundleDecision(sender, bundle) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Do you want to explore more on the above offered bundle?",
+				"text": "Do you want to explore more about the above offered bundle?",
 				"buttons":[
 					{
 						"type": "postback",
