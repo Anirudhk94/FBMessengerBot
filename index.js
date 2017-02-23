@@ -170,12 +170,11 @@ function sendRecommendedBundle(sender, bundle) {
 		"attachment": {
 			"type": "template",
 			"payload": {
-				"template_type": "generic",
-				"elements": []
+				"template_type": "generic"
 			}
 		}
 	}
-	console.log("Bundle Length : ****************"+bundle.length)
+	console.log("Bundle Length : ****************"+bundle)
 	for(var i = 1 ; i < 5 ; i++) {
 		messageData.attachment.payload.elements[i-1] = {
 			"title": bundle[i].Label,
