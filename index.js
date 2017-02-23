@@ -215,7 +215,7 @@ function sendRecommendedBundle(sender, bundle) {
 			console.log('Error: ', response.body.error)
 		} else {
 			//setTimeout(2000);
-			sendTextMessage(sender,"Bundle Summary <br/>"+Total pay(now) : "+ totalPayNow +" <br/>Total pay(monthly) : "+ totalPayMonthly)
+			sendTextMessage(sender,"Bundle Summary <br/>"+"Total pay(now) : "+ totalPayNow +" <br/>Total pay(monthly) : "+ totalPayMonthly)
 			bundleDecision(sender, bundle);
 		}
 	})
