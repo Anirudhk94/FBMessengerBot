@@ -16,6 +16,9 @@ let q1ans;
 let q2ans;
 let q3ans;
 
+let totalPayMonthly = 0;
+let totalPayMonthly = 0;
+
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -179,19 +182,22 @@ function sendRecommendedBundle(sender, bundle) {
 		}
 	}
 	//console.log("ITEM 1 : ****************"+JSON.stringify(bundle[1]))
+	let j = 0
 	for(var i = JSON.stringify(bundle.length) - 1 ; i > 0  ; i--) {
-		messageData.attachment.payload.elements[i-1] = {
+		messageData.attachment.payload.elements[j++] = {
 			"title": JSON.stringify(bundle[i].Label).replace(/"/g,''),
 			"subtitle": JSON.stringify(bundle[i].ShortDescription).replace(/"/g,''),
 			"image_url": "https://f9a1ba24.ngrok.io/uplus/"+JSON.stringify(bundle[i].ImageURL).replace(/"/g,''),
 			"buttons": [{
 				"type": "postback",
 				"title": "More Information",
-				"payload": "asd",
+				"payload": "More Information"
 				}],
 		 }
-
-		console.log("bundle[i].Label = "+JSON.stringify(bundle[i].Label))
+		 totalPayNow = totalPayNow + JSON.stringify(bundle[i].OneTimeBudgetedCost).replace(/"/g,'')
+		 totalPayMonthly = totalPayMonthly + JSON.stringify(bundle[i].MonthlyRecurringCost).replace(/"/g,'')
+		console.log("totalPayNow = "+totalPayNow)
+		console.log("totalPayMonthly = "+totalPayMonthly)
 	}//for end
 
 	request({
