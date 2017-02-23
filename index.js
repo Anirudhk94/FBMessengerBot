@@ -55,9 +55,10 @@ app.post('/webhook/', function (req, res) {
 			let text = event.message.text
 			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
-				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
+				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')) { 
+				findCustomer(sender)	
 				sendTextMessage(sender,"Hello John" +", How may I assist you?")
-				// console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
+				//console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
 				//sendGenericMessage(sender)
 				getNBA(sender, customer_id)
 				continue
@@ -66,15 +67,15 @@ app.post('/webhook/', function (req, res) {
 			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan') ) {
 				sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
 				sendBestOffer(sender)
-				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
+				// sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 
 			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') || text.includes('Problem')
-			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel')) {
+			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel') || text.includes('not')|| text.includes('Not')) {
 				initiateSurvey(sender)
-				//sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
-				//sendBestOffer(sender)
+				// sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
+				// sendBestOffer(sender)
 				// sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
@@ -152,6 +153,15 @@ app.post('/webhook/', function (req, res) {
 	}
 	res.sendStatus(200)
 })
+
+// finds the customer and sets the customer_id and user_name
+function findCustomer(sender) {
+	if(JSON.stringify(sender).replace(/"/g,'') === "100000798820520") {
+		console.log("User ID : " + JSON.stringify(sender))
+	} else {
+		console.log("User ID : " + JSON.stringify(sender))
+	}
+}
 
 // connects to PMC and fetches the Next Best Action
 function getNBA(sender, customer_id) {
