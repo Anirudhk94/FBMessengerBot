@@ -176,7 +176,7 @@ function sendRecommendedBundle(sender, bundle) {
 		}
 	}
 	//console.log("ITEM 1 : ****************"+JSON.stringify(bundle[1]))
-	for(var i = 1 ; i < JSON.stringify(bundle.length) ; i++) {
+	for(var i = JSON.stringify(bundle.length) - 1 ; i > 0  ; i--) {
 		messageData.attachment.payload.elements[i-1] = {
 			"title": JSON.stringify(bundle[i].Label).replace(/"/g,''),
 			"subtitle": JSON.stringify(bundle[i].ShortDescription).replace(/"/g,''),
@@ -205,7 +205,7 @@ function sendRecommendedBundle(sender, bundle) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			bundleDecision(sender, bundle);
+			setTimeout(bundleDecision, 2000);
 		}
 	})
 }
