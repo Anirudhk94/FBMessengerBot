@@ -6,7 +6,7 @@ const request = require('request')
 const app = express()
 
 let offer;
-let customer_id 
+let customer_id = 'C1000001'
 let questions = [ 
 					{ key : "ReasonForLeaving", text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
