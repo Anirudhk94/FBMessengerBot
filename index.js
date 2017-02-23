@@ -156,7 +156,7 @@ app.post('/webhook/', function (req, res) {
 
 // finds the customer and sets the customer_id and user_name
 function findCustomer(sender) {
-	if(JSON.stringify(sender).replace(/"/g,'') === "100000798820520") {
+	if(JSON.stringify(sender).replace(/"/g,'') === "1101192556656557") {
 		console.log("User ID inside find: " + JSON.stringify(sender))
 	} else {
 		console.log("User ID : " + JSON.stringify(sender))
