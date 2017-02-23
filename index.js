@@ -158,7 +158,7 @@ function retriveBundle(sender) {
 			console.log('Error: ', response.body.error)
 		} else {
 			console.log("RecommendedBundle ****************** "+ JSON.stringify(response));
-			let bundle = JSON.stringify(response.body.ResponseData.RecommendedBundle.RankedResults)
+			let bundle = response.body.ResponseData.RecommendedBundle.RankedResults
 			sendRecommendedBundle(sender, bundle);
 		}
 	})
@@ -174,7 +174,7 @@ function sendRecommendedBundle(sender, bundle) {
 			}
 		}
 	}
-	console.log("Bundle Length : ****************"+bundle[1])
+	console.log("ITEM 1 : ****************"+JSON.stringify(bundle[1]))
 	for(var i = 1 ; i < 5 ; i++) {
 		// messageData.attachment.payload.elements[i-1] = {
 		// 	"title": bundle[i].Label,
@@ -195,7 +195,7 @@ function sendRecommendedBundle(sender, bundle) {
 		// 		}],
 		//  }
 
-		console.log("bundle[i].Label = "+bundle[i].Label)
+		console.log("bundle[i].Label = "+JSON.stringify(bundle[i].Label))
 	}//for end
 
 	request({
