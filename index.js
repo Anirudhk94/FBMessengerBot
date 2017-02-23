@@ -49,12 +49,11 @@ app.post('/webhook/', function (req, res) {
 		let sender = event.sender.id
 		if (event.message && event.message.text) {
 			let text = event.message.text
-			
+			console.log("User details   **********************************:    "+JSON.stringify(event))
 			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
 				sendTextMessage(sender,"Hello, How may I assist you?")
-				console.log("User details   *******************************:    "+JSON.stringify(req));
 				//sendGenericMessage(sender)
 				continue
 			} 
@@ -83,7 +82,7 @@ app.post('/webhook/', function (req, res) {
 			let text = event.postback.payload
 			
 			if (text === 'OFFER_ACCEPTED') {	
-				console.log('Offer data'+JSON.stringify(offer))
+				// console.log('Offer data'+JSON.stringify(offer))
 				offerDecision(sender, offer, "Accepted", "Positive")
 				//sendTextMessage(sender, "Offer has been accepted", token)
 			}
@@ -138,7 +137,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
 			}  
 			else {
-				console.log("Text: " + text + " " + JSON.stringify(event.postback))
+				//console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
 				//sendBestOffer(sender);
 				//sendGenericMessage(sender, token)
@@ -164,7 +163,7 @@ function retriveBundle(sender) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			console.log("RecommendedBundle ****************** "+ JSON.stringify(response));
+			//console.log("RecommendedBundle ****************** "+ JSON.stringify(response));
 			let bundle = response.body.ResponseData.RecommendedBundle.RankedResults
 			sendRecommendedBundle(sender, bundle);
 		}
@@ -197,8 +196,8 @@ function sendRecommendedBundle(sender, bundle) {
 		 }
 		 totalPayNow = totalPayNow + parseInt(JSON.stringify(bundle[i].OneTimeBudgetedCost).replace(/"/g,''))
 		 totalPayMonthly = totalPayMonthly + parseInt(JSON.stringify(bundle[i].MonthlyRecurringCost).replace(/"/g,''))
-		console.log("totalPayNow = "+totalPayNow)
-		console.log("totalPayMonthly = "+totalPayMonthly)
+		// console.log("totalPayNow = "+totalPayNow)
+		// console.log("totalPayMonthly = "+totalPayMonthly)
 	}//for end
 
 	request({
@@ -291,7 +290,7 @@ function sendValueStatements(sender, ans1, ans2, ans3) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			console.log("Value statements   ****************  "+JSON.stringify(response));
+			// console.log("Value statements   ****************  "+JSON.stringify(response));
 			let valueStatements = response.body.ResponseData.ValueStatements.RankedResults
 			for(var i = 0 ; i < 1 ; i++ ) {
 				sendTextMessage(sender, JSON.stringify(valueStatements[i].ShortDescription).replace(/"/g,''), token)
@@ -403,7 +402,7 @@ function sendQuestion(sender, question) {
 function offerDecision(sender, offer, outcome, behaviour) {
 	offer.Outcome = outcome
 	offer.Behaviour = behaviour
-	console.log("Offer : "+ '['+JSON.stringify(offer)+']'+"    customer id   :"+customer_id)
+	//console.log("Offer : "+ '['+JSON.stringify(offer)+']'+"    customer id   :"+customer_id)
 	request({
 		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V1/CaptureResponse/Initiate',
 		method: 'POST',
@@ -435,7 +434,7 @@ function offerDecision(sender, offer, outcome, behaviour) {
 			if(outcome === "Accepted") {
 				sendTextMessage(sender, offer.Label+" activated",token)
 			}
-			console.log("Status : "+response.Status+"Message : "+response.Message)
+			//console.log("Status : "+response.Status+"Message : "+response.Message)
 			console.log(request);
 		}
 	})
@@ -459,7 +458,7 @@ function sendBestOffer(sender, type) {
 			console.log('Error: ', response.body.error)
 		} else {
 			offer = response.body.ResponseData.TopOffers.RankedResults[0]
-			console.log("Top Offer"+JSON.stringify(offer));
+			//console.log("Top Offer"+JSON.stringify(offer));
 			sendGenericMessage(sender, JSON.stringify(offer.Label).replace(/"/g,''), JSON.stringify(offer.ImageURL).replace(/"/g,''), JSON.stringify(offer.ShortDescription).replace(/"/g,''), offer, token)
 		}
 	})
