@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
 			let text = event.message.text
 			//console.log("User details   :    "+JSON.stringify(event.sender))
 			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
-				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up) ||
+				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
 				sendTextMessage(sender,"Hello, How may I assit you?")
 				//sendGenericMessage(sender)
