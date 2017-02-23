@@ -49,7 +49,7 @@ app.post('/webhook/', function (req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
-		if(JSON.stringify(sender.id) === '1101192556656557'){
+		if(JSON.stringify(event.sender.id) === '1101192556656557'){
 				user_name = 'John'
 		} else {
 			user_name = 'Sara'
@@ -60,7 +60,7 @@ app.post('/webhook/', function (req, res) {
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
 				sendTextMessage(sender,"Hello "+ user_name +", How may I assist you?")
-				console.log(sender.id+"######################"+JSON.stringify(sender.id))
+				console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
 				//sendGenericMessage(sender)
 				continue
 			} 
