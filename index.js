@@ -64,11 +64,17 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan') ) {
-				sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
+			else if(NBA === "abcdefxyz" || text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
+				sendTextMessage(sender, "Sure +"+ user_name +"+, Let me check what kind of offers I have got in store for you.", token)
 				sendBestOffer(sender)
-				// sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
+				sendTextMessage(sender, "As you have crossed the data usage threshold in the past two month, I suggested to you this offer.", token)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			}
+
+			else if((text.includes('termination') || text.includes('Termination')) && (NBA === 'RetainCustomer')) {
+				sendTextMessage(sender, "I am sensing that you planning to cancel your contract with UPlus Communications.")
+				// checkIfHappy(sender)
+				////////////////////////////////////////Pending/////////////////////////////////
 			}
 
 			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') || text.includes('Problem')
@@ -97,17 +103,17 @@ app.post('/webhook/', function (req, res) {
 				sendOptions(sender);
 			}
 			else if (text === 'DATA_OFFERS') {
-				sendTextMessage(sender, "Let me check what kind of data offers I have got in store for you.", token)
+				sendTextMessage(sender, "Let me check what kind of data offers I have got in store for you "+ user_name +".", token)
 				sendBestOffer(sender, "Data");
 				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this data offer.", token)
 			}
 			else if (text === 'SMS_OFFERS') {
-				sendTextMessage(sender, "Let me check what kind of texting offers I have got in store for you.", token)
+				sendTextMessage(sender, "Let me check what kind of texting offers I have got in store for you "+ user_name +".", token)
 				sendBestOffer(sender, "Message");
 				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this texting offer.", token)
 			}
 			else if (text === 'VOICE_OFFERS') {
-				sendTextMessage(sender, "Let me check what kind of voice offers I have got in store for you.", token)
+				sendTextMessage(sender, "Let me check what kind of voice offers I have got in store for you "+ user_name +".", token)
 				sendBestOffer(sender, "Call");
 				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this voice offer.", token)
 			}
@@ -130,17 +136,23 @@ app.post('/webhook/', function (req, res) {
 				sendValueStatements(sender, q1ans, q2ans, q3ans)
 			}
 			else if (text === 'HAPPY_CUSTOMER') {
-				sendTextMessage(sender, "Thank You! It was a pleasure serving you.", token)
+				sendTextMessage(sender, "Thank You "+ user_name +". Have a great day", token)
 			}
 			else if (text === 'UNHAPPY_CUSTOMER') {
-				sendTextMessage(sender, "Sorry for the inconvenience! Let me check what I have got in store for you.", token)
+				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Let me check what I have got in store for you.", token)
 				retriveBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
 				sendTextMessage(sender, "Our customer service team will contact you within 24 hours regarding the offered bundle and try to resolve your issue", token)
 			}
 			else if (text === 'BUNDLE_REJECTED') {
-				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
+				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our CSR will get back to resolve your issue.", token)
+			}  
+			else if (text === 'BUNDLE_NOT_NEEDED') {
+				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our CSR will get back to resolve your issue.", token)
+			}  
+			else if (text === 'BUNDLE_NEEDED') {
+				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! ", token)
 			}  
 			else {
 				//console.log("Text: " + text + " " + JSON.stringify(event.postback))
@@ -154,15 +166,54 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
+// checks if customer is happy in retention case
+function checkIfHappy(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": "Before that, can you plese complete the following survey",
+				"buttons":[
+					{
+						"type": "postback",
+						"title": "Yes",
+						"payload": "BUNDLE_NOT_NEEDED",
+					}, {
+						"type": "postback",
+						"title": "No",
+						"payload": "BUNDLE_NEEDED",
+					}
+				]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
 // finds the customer and sets the customer_id and user_name
 function findCustomer(sender) {
 	if(JSON.stringify(sender).replace(/"/g,'') === "1101192556656557") {
-		console.log("User ID inside find: " + JSON.stringify(sender))
-		user_name = 'John'
+		//console.log("User ID inside find: " + JSON.stringify(sender))
+		user_name = 'Mr. John Brown'
 		customer_id = 'C1000001'
 	} else {
-		console.log("User ID : " + JSON.stringify(sender))
-		user_name = 'Sara'
+		//console.log("User ID : " + JSON.stringify(sender))
+		user_name = 'Mrs. Sara Lathm'
 		customer_id = 'C1000002'
 	}
 }
