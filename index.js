@@ -49,7 +49,7 @@ app.post('/webhook/', function (req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
-		if(JSON.stringify(event.sender.id) === '1101192556656557'){
+		if(JSON.stringify(event.sender.id).replace(/"/g,'') === '1101192556656557'){
 				user_name = 'John'
 		} else {
 			user_name = 'Sara'
