@@ -19,6 +19,8 @@ let q3ans;
 let totalPayNow = 0;
 let totalPayMonthly = 0;
 
+let user_name;
+
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -47,13 +49,17 @@ app.post('/webhook/', function (req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
+		if(sender.id === "1101192556656557"){
+				user_name = 'John Brown'
+		} else {
+			user_name = 'Sara Lathm'
+		}
 		if (event.message && event.message.text) {
 			let text = event.message.text
-			console.log("User details   **********************************:    "+JSON.stringify(event))
 			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
-				sendTextMessage(sender,"Hello, How may I assist you?")
+				sendTextMessage(sender,"Hello "+ user_name +", How may I assist you?")
 				//sendGenericMessage(sender)
 				continue
 			} 
