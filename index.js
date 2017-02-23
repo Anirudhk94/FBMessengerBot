@@ -170,7 +170,8 @@ function sendRecommendedBundle(sender, bundle) {
 		"attachment": {
 			"type": "template",
 			"payload": {
-				"template_type": "generic"
+				"template_type": "generic",
+				"elements": []
 			}
 		}
 	}
