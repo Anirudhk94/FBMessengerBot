@@ -6,7 +6,7 @@ const request = require('request')
 const app = express()
 
 let offer;
-let customer_id = 'C1000001'
+let customer_id 
 let questions = [ 
 					{ key : "ReasonForLeaving", text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
@@ -50,9 +50,11 @@ app.post('/webhook/', function (req, res) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
 		if(JSON.stringify(event.sender.id).replace(/"/g,'') === '1101192556656557'){
-				user_name = 'John'
+				user_name = 'John';
+				customer_id = 'C1000001';
 		} else {
-			user_name = 'Sara'
+			user_name = 'Sara';
+			customer_id = 'C1000002';
 		}
 		if (event.message && event.message.text) {
 			let text = event.message.text
@@ -62,6 +64,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender,"Hello "+ user_name +", How may I assist you?")
 				// console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
 				//sendGenericMessage(sender)
+				getNBA(sender, customer_id)
 				continue
 			} 
 
