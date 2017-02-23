@@ -158,7 +158,7 @@ function retriveBundle(sender) {
 			console.log('Error: ', response.body.error)
 		} else {
 			console.log("RecommendedBundle ****************** "+ JSON.stringify(response));
-			bundle = JSON.stringify(response.body.ResponseData.RecommendedBundle.RankedResults)
+			let bundle = JSON.stringify(response.body.ResponseData.RecommendedBundle.RankedResults)
 			sendRecommendedBundle(sender, bundle);
 		}
 	})
