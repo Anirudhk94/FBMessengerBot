@@ -57,7 +57,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender,"Hello John" +", How may I assist you?")
 				// console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
 				//sendGenericMessage(sender)
-				getNBA(sender, customer_id)
+				// getNBA(sender, customer_id)
 				continue
 			} 
 
