@@ -121,7 +121,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Thank You! It was a pleasure serving you.", token)
 			}
 			else if (text === 'UNHAPPY_CUSTOMER') {
-				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
+				sendTextMessage(sender, "Sorry for the inconvenience! Let me check what I have got in store for you.", token)
 				retriveBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
@@ -205,7 +205,7 @@ function sendRecommendedBundle(sender, bundle) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			setTimeout(2000);
+			//setTimeout(2000);
 			bundleDecision(sender, bundle);
 		}
 	})
@@ -218,7 +218,7 @@ function bundleDecision(sender, bundle) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Do you want to explore more about this bundle offer?",
+				"text": "Do you want to explore more on the above offered bundle?",
 				"buttons":[
 					{
 						"type": "postback",
