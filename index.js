@@ -49,11 +49,12 @@ app.post('/webhook/', function (req, res) {
 		let sender = event.sender.id
 		if (event.message && event.message.text) {
 			let text = event.message.text
-			console.log("User details   :    "+JSON.stringify(req.body.entry[0].messaging[i]))
+			
 			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
 				sendTextMessage(sender,"Hello, How may I assist you?")
+				console.log("User details   *******************************:    "+JSON.stringify(req)
 				//sendGenericMessage(sender)
 				continue
 			} 
