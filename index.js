@@ -205,8 +205,8 @@ function sendRecommendedBundle(sender, bundle) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			setTimeout(bundleDecision(sender, bundle), 3000);
-			//bundleDecision(sender, bundle);
+			setTimeout(2000);
+			bundleDecision(sender, bundle);
 		}
 	})
 }
