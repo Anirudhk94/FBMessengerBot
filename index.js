@@ -125,7 +125,7 @@ app.post('/webhook/', function (req, res) {
 				retriveBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
-				sendTextMessage(sender, "Your bundle will be activated in 1-2 business days", token)
+				sendTextMessage(sender, "Our customer service team will contact you within 24 hours regarding the offered bundle and try to resolve your issue", token)
 			}
 			else if (text === 'BUNDLE_REJECTED') {
 				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
@@ -183,15 +183,7 @@ function sendRecommendedBundle(sender, bundle) {
 			"image_url": "https://f9a1ba24.ngrok.io/uplus/"+JSON.stringify(bundle[i].ImageURL).replace(/"/g,''),
 			"buttons": [{
 				"type": "postback",
-				"title": "Accept Bundle",
-				"payload": "BUNDLE_ACCEPTED",
-				}, {
-				"type": "postback",
-				"title": "Not interested",
-				"payload": "BUNDLE_REJECTED",
-				}, {
-				"type": "postback",
-				"title": "Why am I seeing this?",
+				"title": "More Information",
 				"payload": "asd",
 				}],
 		 }
@@ -212,9 +204,56 @@ function sendRecommendedBundle(sender, bundle) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
+		} else {
+			bundleDecision(sender, bundle);
 		}
 	})
-} 
+}
+
+// Enquiry about the bundle 
+function bundleDecision(sender, bundle) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": "Do you want to explore more about this bundle offer?",
+				"buttons":[
+					{
+						"type": "postback",
+						"title": "Explore More",
+						"payload": "BUNDLE_ACCEPTED",
+					}, {
+						"type": "postback",
+						"title": "Not interested",
+						"payload": "BUNDLE_REJECTED",
+					}, 
+					{
+						"type":"phone_number",
+						"payload": "+918466975975",
+						"title": "Call Representative"
+					}
+				]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
 
 // Retrives the best offer for a specific type - voice/sms/data
 function sendValueStatements(sender, ans1, ans2, ans3) {
