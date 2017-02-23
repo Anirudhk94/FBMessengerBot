@@ -103,7 +103,7 @@ app.post('/webhook/', function (req, res) {
 				//sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this voice offer.", token)
 			}
 			else if (text === 'OFFER_RELEVANCE') {
-				sendTextMessage(sender, JSON.stringify(offer.EligibilityDescription).replace(/"/g,''), token)
+				sendTextMessage(sender, JSON.stringify(offer.WhyRelevant).replace(/"/g,''), token)
 			}
 			else if (text === 'Competitive Offer' || text === 'Too Expensive' || text === 'Poor Coverage') {
 				//sendTextMessage(sender, "Competitive offer")
