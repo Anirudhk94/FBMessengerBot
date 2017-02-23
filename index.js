@@ -135,7 +135,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Thank You "+ user_name +". Have a great day", token)
 			}
 			else if (text === 'UNHAPPY_CUSTOMER') {
-				sendTextMessage(sender, "We are sorry "+ user_name +", that you were not satisfied by our products and services. We value your business and we would like to make it up to you.", token)
+				sendTextMessage(sender, "We are extremely sorry "+ user_name +", that you are not satisfied with our products/services. We value your business and we would like to make it up to you.", token)
 				checkIfWantsBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
