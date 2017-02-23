@@ -16,7 +16,7 @@ let q1ans;
 let q2ans;
 let q3ans;
 
-let totalPayMonthly = 0;
+let totalPayNow = 0;
 let totalPayMonthly = 0;
 
 app.set('port', (process.env.PORT || 5000))
