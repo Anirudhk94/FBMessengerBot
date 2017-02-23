@@ -21,6 +21,8 @@ let totalPayMonthly = 0;
 
 let user_name;
 
+let NBA;
+
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -57,7 +59,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender,"Hello John" +", How may I assist you?")
 				// console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
 				//sendGenericMessage(sender)
-				// getNBA(sender, customer_id)
+				getNBA(sender, customer_id)
 				continue
 			} 
 
@@ -151,6 +153,28 @@ app.post('/webhook/', function (req, res) {
 	res.sendStatus(200)
 })
 
+// connects to PMC and fetches the Next Best Action
+function getNBA(sender, customer_id) {
+	request({
+		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V2/Container',
+		method: 'POST',
+		json: {
+			ContainerName: "NextBestAction",
+			CustomerID:  customer_id
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		} else {
+			console.log("Next Best Action ****************** "+ JSON.stringify(response));
+			// let NBA = response.body.ResponseData.RecommendedBundle.RankedResults
+			// sendRecommendedBundle(sender, bundle);
+		}
+	})
+}
+
 // Retrives a bundle in retention scenario
 function retriveBundle(sender) {
 	request({
@@ -218,8 +242,8 @@ function sendRecommendedBundle(sender, bundle) {
 			console.log('Error: ', response.body.error)
 		} else {
 			//setTimeout(2000);
-			sendTextMessage(sender,"Total pay(now) : "+ totalPayNow )
-			sendTextMessage(sender," Total pay(monthly) : "+ totalPayMonthly)
+			sendTextMessage(sender,"Total pay(now) : $"+ totalPayNow )
+			sendTextMessage(sender," Total pay(monthly) : $"+ totalPayMonthly)
 			bundleDecision(sender, bundle);
 		}
 	})
