@@ -214,7 +214,7 @@ function sendRecommendedBundle(sender, bundle) {
 		messageData.attachment.payload.elements[j++] = {
 			"title": JSON.stringify(bundle[i].Label).replace(/"/g,''),
 			"subtitle": JSON.stringify(bundle[i].ShortDescription).replace(/"/g,''),
-			"image_url": "https://f9a1ba24.ngrok.io/uplus/images/abc.png",//+JSON.stringify(bundle[i].ImageURL).replace(/"/g,''),
+			"image_url": "https://f9a1ba24.ngrok.io/uplus/images/hdtv.png",//+JSON.stringify(bundle[i].ImageURL).replace(/"/g,''),
 			"buttons": [{
 				"type": "postback",
 				"title": "More Information",
