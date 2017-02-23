@@ -169,8 +169,8 @@ function getNBA(sender, customer_id) {
 			console.log('Error: ', response.body.error)
 		} else {
 			console.log("Next Best Action ****************** "+ JSON.stringify(response));
-			// let NBA = response.body.ResponseData.RecommendedBundle.RankedResults
-			// sendRecommendedBundle(sender, bundle);
+			NBA = response.body.ResponseData.NextBestAction.NextBestActions[0].ActionID
+			console.log("Next Best Action ID ****************** "+ JSON.stringify(NBA));
 		}
 	})
 }
