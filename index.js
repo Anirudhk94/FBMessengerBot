@@ -16,8 +16,8 @@ let q1ans;
 let q2ans;
 let q3ans;
 
-let totalPayNow = 0;
-let totalPayMonthly = 0;
+int totalPayNow = 0;
+int totalPayMonthly = 0;
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -194,8 +194,8 @@ function sendRecommendedBundle(sender, bundle) {
 				"payload": "More Information"
 				}],
 		 }
-		 totalPayNow = totalPayNow + JSON.stringify(bundle[i].OneTimeBudgetedCost).replace(/"/g,'')
-		 totalPayMonthly = totalPayMonthly + JSON.stringify(bundle[i].MonthlyRecurringCost).replace(/"/g,'')
+		 totalPayNow = totalPayNow + parseInt(JSON.stringify(bundle[i].OneTimeBudgetedCost).replace(/"/g,''))
+		 totalPayMonthly = totalPayMonthly + parseInt(JSON.stringify(bundle[i].MonthlyRecurringCost).replace(/"/g,''))
 		console.log("totalPayNow = "+totalPayNow)
 		console.log("totalPayMonthly = "+totalPayMonthly)
 	}//for end
