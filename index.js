@@ -319,11 +319,11 @@ function bundleDecision(sender, bundle) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Do you want to explore more about the above offered bundle?",
+				"text": "Do you want to explore more about this bundle?",
 				"buttons":[
 					{
 						"type": "postback",
-						"title": "Explore More",
+						"title": "Yes",
 						"payload": "BUNDLE_ACCEPTED",
 					}, {
 						"type": "postback",
