@@ -176,24 +176,26 @@ function sendRecommendedBundle(sender, bundle) {
 	}
 	console.log("Bundle Length : ****************"+bundle)
 	for(var i = 1 ; i < 5 ; i++) {
-		messageData.attachment.payload.elements[i-1] = {
-			"title": bundle[i].Label,
-			"subtitle": bundle[i].ShortDescription,
-			"image_url": "https://f9a1ba24.ngrok.io/uplus/"+bundle[i].ImageURL,
-			"buttons": [{
-				"type": "postback",
-				"title": "Accept Bundle",
-				"payload": "BUNDLE_ACCEPTED",
-				}, {
-				"type": "postback",
-				"title": "Not interested",
-				"payload": "BUNDLE_REJECTED",
-				}, {
-				"type": "postback",
-				"title": "Why am I seeing this?",
-				"payload": "",
-				}],
-		 }
+		// messageData.attachment.payload.elements[i-1] = {
+		// 	"title": bundle[i].Label,
+		// 	"subtitle": bundle[i].ShortDescription,
+		// 	"image_url": "https://f9a1ba24.ngrok.io/uplus/"+bundle[i].ImageURL,
+		// 	"buttons": [{
+		// 		"type": "postback",
+		// 		"title": "Accept Bundle",
+		// 		"payload": "BUNDLE_ACCEPTED",
+		// 		}, {
+		// 		"type": "postback",
+		// 		"title": "Not interested",
+		// 		"payload": "BUNDLE_REJECTED",
+		// 		}, {
+		// 		"type": "postback",
+		// 		"title": "Why am I seeing this?",
+		// 		"payload": "",
+		// 		}],
+		//  }
+
+		console.log("bundle[i].Label = "+bundle[i].Label)
 	}//for end
 
 	request({
