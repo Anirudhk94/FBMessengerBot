@@ -50,7 +50,7 @@ app.post('/webhook/', function (req, res) {
 			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
-				sendTextMessage(sender,"Hello, How may I assit you?")
+				sendTextMessage(sender,"Hello, How may I assist you?")
 				//sendGenericMessage(sender)
 				continue
 			} 
@@ -62,7 +62,8 @@ app.post('/webhook/', function (req, res) {
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 
-			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') ) {
+			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') || text.includes('Problem')
+			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel')) {
 				initiateSurvey(sender)
 				//sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
 				//sendBestOffer(sender)
