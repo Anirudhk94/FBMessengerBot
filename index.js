@@ -176,11 +176,11 @@ function sendRecommendedBundle(sender, bundle) {
 		}
 	}
 	//console.log("ITEM 1 : ****************"+JSON.stringify(bundle[1]))
-	for(var i = 1 ; i < 5 ; i++) {
+	for(var i = 1 ; i < JSON.stringify(bundle.length) ; i++) {
 		messageData.attachment.payload.elements[i-1] = {
-			"title": JSON.stringify(bundle[i].Label),
-			"subtitle": JSON.stringify(bundle[i].ShortDescription),
-			"image_url": "https://f9a1ba24.ngrok.io/uplus/"+JSON.stringify(bundle[i].ImageURL),
+			"title": JSON.stringify(bundle[i].Label).replace(/"/g,''),
+			"subtitle": JSON.stringify(bundle[i].ShortDescription).replace(/"/g,''),
+			"image_url": "https://f9a1ba24.ngrok.io/uplus/"+JSON.stringify(bundle[i].ImageURL).replace(/"/g,''),
 			"buttons": [{
 				"type": "postback",
 				"title": "Accept Bundle",
