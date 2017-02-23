@@ -64,21 +64,17 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			else if(NBA === "abcdefxyz" || text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
+			else if(NBA != "RetainCustomer" || text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
 				sendTextMessage(sender, "Sure "+ user_name +", Let me check what kind of offers I have got in store for you.", token)
 				sendBestOffer(sender)
 				sendTextMessage(sender, "As you have crossed the data usage threshold in the past couple of months, I think this is the most suitable offer for you.", token)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 
-			else if((text.includes('termination') || text.includes('Termination')) && (NBA === 'RetainCustomer')) {
-				sendTextMessage(sender, "I am sensing that you planning to cancel your contract with UPlus Communications.")
-				// checkIfHappy(sender)
-				////////////////////////////////////////Pending/////////////////////////////////
-			}
-
 			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') || text.includes('Problem')
-			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel') || text.includes('not')|| text.includes('Not')) {
+			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel') || text.includes('not')|| text.includes('Not') || text.includes('terminate') 
+			|| text.includes('Terminate')) {
+				sendTextMessage(sender, "Thank You "+ user_name+", for contacting UPlus Communications.")
 				initiateSurvey(sender)
 				// sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
 				// sendBestOffer(sender)
@@ -139,8 +135,8 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Thank You "+ user_name +". Have a great day", token)
 			}
 			else if (text === 'UNHAPPY_CUSTOMER') {
-				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Let me check what I have got in store for you.", token)
-				retriveBundle(sender)
+				sendTextMessage(sender, "We are sorry "+ user_name +", that you were not satisfied by our products and services. We value your business and we would like to make it up to you.", token)
+				checkIfWantsBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
 				sendTextMessage(sender, "Our customer service team will contact you within 24 hours regarding the offered bundle and try to resolve your issue", token)
@@ -152,7 +148,8 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our CSR will get back to resolve your issue.", token)
 			}  
 			else if (text === 'BUNDLE_NEEDED') {
-				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! ", token)
+				//sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! ", token)
+				retriveBundle(sender)
 			}  
 			else {
 				//console.log("Text: " + text + " " + JSON.stringify(event.postback))
@@ -167,22 +164,22 @@ app.post('/webhook/', function (req, res) {
 })
 
 // checks if customer is happy in retention case
-function checkIfHappy(sender) {
+function checkIfWantsBundle(sender) {
 	let messageData = {
 		"attachment": {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Before that, can you plese complete the following survey",
+				"text": "Would you like to have a look at an exciting bundle offer exclusively for you?",
 				"buttons":[
 					{
 						"type": "postback",
 						"title": "Yes",
-						"payload": "BUNDLE_NOT_NEEDED",
+						"payload": "BUNDLE_NEEDED",
 					}, {
 						"type": "postback",
 						"title": "No",
-						"payload": "BUNDLE_NEEDED",
+						"payload": "BUNDLE_NOT_NEEDED",
 					}
 				]
 			}
