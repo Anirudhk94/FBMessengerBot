@@ -192,7 +192,7 @@ function sendRecommendedBundle(sender, bundle) {
 				}, {
 				"type": "postback",
 				"title": "Why am I seeing this?",
-				"payload": "",
+				"payload": "asd",
 				}],
 		 }
 
