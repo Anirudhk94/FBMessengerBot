@@ -175,8 +175,8 @@ function sendRecommendedBundle(sender, bundle) {
 			}
 		}
 	}
-
-	for(var i = 1 ; i < bundle.length ; i++) {
+	console.log("Bundle Length : ****************"+bundle.length)
+	for(var i = 1 ; i < 5 ; i++) {
 		messageData.attachment.payload.elements[i-1] = {
 			"title": bundle[i].Label,
 			"subtitle": bundle[i].ShortDescription,
