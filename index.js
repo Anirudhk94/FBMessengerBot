@@ -6,7 +6,7 @@ const request = require('request')
 const app = express()
 
 let offer;
-let customer_id = 'C1000001'
+let customer_id 
 let questions = [ 
 					{ key : "ReasonForLeaving", text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
@@ -57,7 +57,7 @@ app.post('/webhook/', function (req, res) {
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')) { 
 				findCustomer(sender)	
-				sendTextMessage(sender,"Hello John" +", How may I assist you?")
+				sendTextMessage(sender,"Hello "+user_name +", How may I assist you?")
 				//console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
 				//sendGenericMessage(sender)
 				getNBA(sender, customer_id)
@@ -158,8 +158,12 @@ app.post('/webhook/', function (req, res) {
 function findCustomer(sender) {
 	if(JSON.stringify(sender).replace(/"/g,'') === "1101192556656557") {
 		console.log("User ID inside find: " + JSON.stringify(sender))
+		user_name = 'John'
+		customer_id = 'C1000001'
 	} else {
 		console.log("User ID : " + JSON.stringify(sender))
+		user_name = 'Sara'
+		customer_id = 'C1000002'
 	}
 }
 
