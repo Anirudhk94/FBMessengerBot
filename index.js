@@ -38,7 +38,6 @@ app.get('/', function (req, res) {
 app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
 		res.send(req.query['hub.challenge'])
-		sendTextMessage(sender,"Hello "+ user_name +", How may I assist you?")
 	} else {
 		res.send('Error, wrong token')
 	}
@@ -60,8 +59,8 @@ app.post('/webhook/', function (req, res) {
 			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
 				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up') ||
 				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
-				// sendTextMessage(sender,"Hello "+ user_name +", How may I assist you?")
-				console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
+				sendTextMessage(sender,"Hello "+ user_name +", How may I assist you?")
+				// console.log(event.sender.id+"######################"+JSON.stringify(event.sender.id))
 				//sendGenericMessage(sender)
 				continue
 			} 
