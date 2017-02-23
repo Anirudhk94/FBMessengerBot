@@ -47,8 +47,10 @@ app.post('/webhook/', function (req, res) {
 		if (event.message && event.message.text) {
 			let text = event.message.text
 			//console.log("User details   :    "+JSON.stringify(event.sender))
-			if (text === 'Generic'){ 
-				console.log("Hello, I'm UplusBot. I try to be helpful. (But I'm still just a bot. Sorry!)\n Type something to get started.")
+			if (text.includes('hi') || text.includes('hello') || text.includes('Hi') || text.includes('Hello') || 
+				text.includes('greetings') || text.includes('Greetings') || text.includes('Sup') || text.includes('What\'s up) ||
+				text.includes('Morning') || text.includes('Afternoon') || text.includes('Evening') || text.includes('Night')){ 
+				sendTextMessage(sender,"Hello, How may I assit you?")
 				//sendGenericMessage(sender)
 				continue
 			} 
