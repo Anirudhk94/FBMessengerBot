@@ -122,6 +122,7 @@ app.post('/webhook/', function (req, res) {
 			}
 			else if (text === 'UNHAPPY_CUSTOMER') {
 				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
+				retriveBundle(sender)
 			}
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
@@ -134,6 +135,26 @@ app.post('/webhook/', function (req, res) {
 	}
 	res.sendStatus(200)
 })
+
+// Retrives a bundle in retention scenario
+function retriveBundle(sender) {
+	request({
+		url: 'https://f9a1ba24.ngrok.io/prweb/PRRestService/PegaMKTContainer/V2/Container',
+		method: 'POST',
+		json: {
+			ContainerName: "RecommendedBundle",
+			CustomerID:  customer_id
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		} else {
+			console.log("Top Offer ****************** "+ JSON.stringify(response));
+		}
+	})
+} 
 
 // Retrives the best offer for a specific type - voice/sms/data
 function sendValueStatements(sender, ans1, ans2, ans3) {
@@ -159,7 +180,7 @@ function sendValueStatements(sender, ans1, ans2, ans3) {
 		} else {
 			console.log("Value statements   ****************  "+JSON.stringify(response));
 			let valueStatements = response.body.ResponseData.ValueStatements.RankedResults
-			for(var i = 0 ; i < 3 ; i++ ) {
+			for(var i = 0 ; i < 1 ; i++ ) {
 				sendTextMessage(sender, JSON.stringify(valueStatements[i].ShortDescription).replace(/"/g,''), token)
 			}
 			postVSurvey(sender)
