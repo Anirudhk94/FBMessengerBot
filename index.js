@@ -124,6 +124,12 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
 				retriveBundle(sender)
 			}
+			else if (text === 'BUNDLE_ACCEPTED') {
+				sendTextMessage(sender, "Your bundle will be activated in 1-2 business days", token)
+			}
+			else if (text === 'BUNDLE_REJECTED') {
+				sendTextMessage(sender, "Sorry for the inconvenience! Our CSR will get back to resolve your issue.", token)
+			}  
 			else {
 				console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
@@ -151,7 +157,59 @@ function retriveBundle(sender) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else {
-			console.log("Top Offer ****************** "+ JSON.stringify(response));
+			console.log("RecommendedBundle ****************** "+ JSON.stringify(response));
+			bundle = JSON.stringify(response.body.ResponseData.RecommendedBundle.RankedResults)
+			sendRecommendedBundle(sender, bundle);
+		}
+	})
+}
+
+// Sends recommended bundle in the retention scenario
+function sendRecommendedBundle(sender, bundle) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "generic",
+				"elements": []
+			}
+		}
+	}
+
+	for(var i = 1 ; i < bundle.length ; i++) {
+		elements[i-1] = {
+			"title": bundle[i].Label,
+			"subtitle": bundle[i].ShortDescription,
+			"image_url": "https://f9a1ba24.ngrok.io/uplus/"+bundle[i].ImageURL,
+			"buttons": [{
+				"type": "postback",
+				"title": "Accept Bundle",
+				"payload": "BUNDLE_ACCEPTED",
+				}, {
+				"type": "postback",
+				"title": "Not interested",
+				"payload": "BUNDLE_REJECTED",
+				}, {
+				"type": "postback",
+				"title": "Why am I seeing this?",
+				"payload": "",
+				}],
+		 }
+	}//for end
+
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
 		}
 	})
 } 
@@ -167,7 +225,7 @@ function sendValueStatements(sender, ans1, ans2, ans3) {
 			"Channel" : "CallCenter",
 			"CustomerID" : "C1000001",
 			"Direction" : "Inbound",
-			"Contexts": [ {"Type" : "QnA", "Value" : ans1, "Key" : "ReasonForLeaving"},
+			"Contexts": [ {"Type" : "QnA", "Value" : "Competitive Offer", "Key" : "ReasonForLeaving"},
 						  {"Type" : "QnA", "Value" : ans2, "Key" : "SelectOperator"},
 						  {"Type" : "QnA", "Value" : ans3, "Key" : "Interests"} ], 
 			"PartyType":"" 
