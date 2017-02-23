@@ -177,7 +177,7 @@ function sendRecommendedBundle(sender, bundle) {
 	}
 
 	for(var i = 1 ; i < bundle.length ; i++) {
-		elements[i-1] = {
+		messageData.attachment.payload.elements[i-1] = {
 			"title": bundle[i].Label,
 			"subtitle": bundle[i].ShortDescription,
 			"image_url": "https://f9a1ba24.ngrok.io/uplus/"+bundle[i].ImageURL,
