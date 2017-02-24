@@ -141,11 +141,14 @@ app.post('/webhook/', function (req, res) {
 			else if (text === 'BUNDLE_ACCEPTED') {
 				sendTextMessage(sender, "Your bundle will be activated within 1-2 hours. Thank you for your understanding in this unfortunate matter.", token)
 			}
+			else if (text === 'BUNDLE_EXPLORE') {
+				sendTextMessage(sender, "Thank you for your understanding in this unfortunate matter. Our Customer Service Agent will call you to explain details about the bundle.", token)
+			}
 			else if (text === 'BUNDLE_REJECTED') {
-				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our CSR will get back to resolve your issue.", token)
+				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our Customer Service Agent will get back to resolve your issue.", token)
 			}  
 			else if (text === 'BUNDLE_NOT_NEEDED') {
-				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our CSR will get back to resolve your issue.", token)
+				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our Customer Service Agent will get back to resolve your issue.", token)
 			}  
 			else if (text === 'BUNDLE_NEEDED') {
 				//sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! ", token)
@@ -319,12 +322,16 @@ function bundleDecision(sender, bundle) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Do you want to explore more about this bundle?",
+				"text": "Do you want to accept this bundle offer?",
 				"buttons":[
 					{
 						"type": "postback",
-						"title": "Yes",
+						"title": "Accept",
 						"payload": "BUNDLE_ACCEPTED",
+					},{
+						"type": "postback",
+						"title": "Explore More",
+						"payload": "BUNDLE_EXPLORE",
 					}, {
 						"type": "postback",
 						"title": "Not interested",
