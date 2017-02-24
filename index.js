@@ -139,7 +139,6 @@ app.post('/webhook/', function (req, res) {
 			}
 			else if (text === 'CONVO_END') {
 				sendTextMessage(sender, "Thank you for chatting with me today. Have a great day!")
-				initiateSurvey(sender)
 			}
 			else if (text === 'NEXT_OFFER') {
 				sendOptions(sender);
