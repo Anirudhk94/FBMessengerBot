@@ -182,11 +182,11 @@ function preInitiateSurvey(sender) {
 					{
 						"type": "postback",
 						"title": "Yes",
-						"payload": "INITIATE_SURVEY",
+						"payload": "BUNDLE_EXPLORE",
 					}, {
 						"type": "postback",
 						"title": "No",
-						"payload": "BUNDLE_EXPLORE",
+						"payload": "INITIATE_SURVEY",
 					}
 				]
 			}
