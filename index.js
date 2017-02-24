@@ -137,6 +137,13 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "I am sorry that you are not happy with our Service. I will be happy to make things right.")
 				initiateSurvey(sender)
 			}
+			else if (text === 'CONVO_END') {
+				sendTextMessage(sender, "Thank you for chatting with me today. Have a great day!")
+				initiateSurvey(sender)
+			}
+			else if (text === 'NEXT_OFFER') {
+				sendOptions(sender);
+			}
 			else if (text === 'HAPPY_CUSTOMER') {
 				sendTextMessage(sender, "Thank You "+ user_name +". Have a great day", token)
 			}
@@ -145,7 +152,7 @@ app.post('/webhook/', function (req, res) {
 				checkIfWantsBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
-				sendTextMessage(sender, "Your bundle will be activated within 1-2 hours. Thank you for your understanding in this matter.", token)
+				sendTextMessage(sender, "Your bundle will be activated within the next 2 hours. Thank you for your understanding, Your business means a lot to us.", token)
 			}
 			else if (text === 'BUNDLE_EXPLORE') {
 				sendTextMessage(sender, "Our Customer Service Agent will call you to answer your queries.", token)
@@ -571,9 +578,49 @@ function offerDecision(sender, offer, outcome, behaviour) {
 		} else {
 			if(outcome === "Accepted") {
 				sendTextMessage(sender, offer.Label+" activated",token)
+				postAcceptStep(sender)
 			}
 			//console.log("Status : "+response.Status+"Message : "+response.Message)
 			console.log(request);
+		}
+	})
+}
+
+// post solace offer acceptance
+function postAcceptStep(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": "Is there anything else  I can do to delight you?",
+				"buttons":[
+					{
+						"type": "postback",
+						"title": "Yes",
+						"payload": "NEXT_OFFER",
+					}, {
+						"type": "postback",
+						"title": "No",
+						"payload": "CONVO_END",
+					}
+				]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
 		}
 	})
 }
