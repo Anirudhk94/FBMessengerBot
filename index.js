@@ -8,7 +8,7 @@ const app = express()
 let offer;
 let customer_id = 'C1000001'
 let questions = [ 
-					{ key : "ReasonForLeaving", text : "May we ask why you are considering leaving U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
+					{ key : "ReasonForLeaving", text : "May we ask why are you unhappy with U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
 					{ key : "Interests", text : "What interests you most about them?", option1 : "Great promotion", option2 : "Good network", option3 : "Economical"}
 				];
@@ -72,8 +72,8 @@ app.post('/webhook/', function (req, res) {
 			}
 
 			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') || text.includes('Problem')
-			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel') || text.includes('not')|| text.includes('Not') || text.includes('terminate') 
-			|| text.includes('Terminate')) {
+			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel') || text.includes('not')|| text.includes('Not') || text.includes('terminat') 
+			|| text.includes('Terminat')) {
 				sendTextMessage(sender, "Thank You "+ user_name+", for contacting UPlus Communications.")
 				initiateSurvey(sender)
 				// sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
