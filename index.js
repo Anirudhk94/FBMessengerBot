@@ -75,7 +75,8 @@ app.post('/webhook/', function (req, res) {
 			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel') || text.includes('not')|| text.includes('Not') || text.includes('terminat') 
 			|| text.includes('Terminat')) {
 				sendTextMessage(sender, "Thank You "+ user_name+", for contacting UPlus Communications.")
-				initiateSurvey(sender)
+				preInitiateSurvey(sender)
+				//initiateSurvey(sender)
 				// sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
 				// sendBestOffer(sender)
 				// sendTextMessage(sender, "Depending on your usage details and, previous interactions with UPlus, I suggest you this offer.", token)
@@ -131,6 +132,9 @@ app.post('/webhook/', function (req, res) {
 				q3ans = text
 				sendValueStatements(sender, q1ans, q2ans, q3ans)
 			}
+			else if (text === 'INITIATE_SURVEY') {
+				initiateSurvey(sender)
+			}
 			else if (text === 'HAPPY_CUSTOMER') {
 				sendTextMessage(sender, "Thank You "+ user_name +". Have a great day", token)
 			}
@@ -165,6 +169,45 @@ app.post('/webhook/', function (req, res) {
 	}
 	res.sendStatus(200)
 })
+
+//
+function preInitiateSurvey(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": "thank you for being an extremely valued client of ours. Have we been meeting all of your needs? ?",
+				"buttons":[
+					{
+						"type": "postback",
+						"title": "Yes",
+						"payload": "INITIATE_SURVEY",
+					}, {
+						"type": "postback",
+						"title": "No",
+						"payload": "BUNDLE_EXPLORE",
+					}
+				]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
 
 // checks if customer is happy in retention case
 function checkIfWantsBundle(sender) {
