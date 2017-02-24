@@ -139,7 +139,7 @@ app.post('/webhook/', function (req, res) {
 				checkIfWantsBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
-				sendTextMessage(sender, "Our customer service team will contact you within 24 hours regarding the offered bundle and try to resolve your issue", token)
+				sendTextMessage(sender, "Your bundle will be activated within 1-2 hours. Thank you for your understanding in this unfortunate matter.", token)
 			}
 			else if (text === 'BUNDLE_REJECTED') {
 				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our CSR will get back to resolve your issue.", token)
