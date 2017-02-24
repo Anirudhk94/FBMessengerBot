@@ -151,7 +151,7 @@ app.post('/webhook/', function (req, res) {
 				checkIfWantsBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
-				sendTextMessage(sender, "Your bundle will be activated within the next 2 hours. Thank you for understanding, your business means a lot to us.", token)
+				sendTextMessage(sender, "Your bundle will be activated within the next 2 hours. Thank you for your understanding, your business means a lot to us.", token)
 			}
 			else if (text === 'BUNDLE_EXPLORE') {
 				sendTextMessage(sender, "Our Customer Service Agent will call you to answer your queries.", token)
@@ -325,9 +325,9 @@ function sendRecommendedBundle(sender, bundle) {
 		}
 	}
 	//console.log("ITEM 1 : ****************"+JSON.stringify(bundle[1]))
-	
+	let j = 0
 	for(var i = JSON.stringify(bundle.length) - 1 ; i > 0  ; i--) {
-		messageData.attachment.payload.elements[i] = {
+		messageData.attachment.payload.elements[j++] = {
 			"title": JSON.stringify(bundle[i].Label).replace(/"/g,''),
 			"subtitle": JSON.stringify(bundle[i].ShortDescription).replace(/"/g,''),
 			"image_url": "https://f9a1ba24.ngrok.io/uplus/UplusBot/"+JSON.stringify(bundle[i].ImageURL).replace(/"/g,''),
