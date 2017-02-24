@@ -170,7 +170,7 @@ function checkIfWantsBundle(sender) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Would you like to have a look at an exciting bundle offer exclusively for you?",
+				"text": "Would you like to have a look at our personalised bundle, configured to fit your needs?",
 				"buttons":[
 					{
 						"type": "postback",
