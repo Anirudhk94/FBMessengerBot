@@ -328,11 +328,8 @@ function bundleDecision(sender, bundle) {
 						"type": "postback",
 						"title": "Accept",
 						"payload": "BUNDLE_ACCEPTED",
-					},{
-						"type": "postback",
-						"title": "Explore More",
-						"payload": "BUNDLE_EXPLORE",
-					}, {
+					},
+					{
 						"type": "postback",
 						"title": "Not interested",
 						"payload": "BUNDLE_REJECTED",
