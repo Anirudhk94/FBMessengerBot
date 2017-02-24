@@ -66,7 +66,7 @@ app.post('/webhook/', function (req, res) {
 
 			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
 				sendTextMessage(sender, "Sure "+ user_name +", Let me check what kind of offers I have got in store for you.", token)
-				setInterval(function(){}, 5000)
+				//setInterval(function(){}, 5000)
 				sendTextMessage(sender, "As you have crossed the data usage threshold in the past couple of months, I think this is the most suitable offer for you.", token)
 				sendBestOffer(sender)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
