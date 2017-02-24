@@ -177,7 +177,7 @@ function preInitiateSurvey(sender) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "thank you for being an extremely valued client of ours. Have we been meeting all of your needs? ?",
+				"text": "Thank you for being an extremely valued client of ours. Have we been meeting all of your needs?",
 				"buttons":[
 					{
 						"type": "postback",
