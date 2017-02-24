@@ -66,8 +66,9 @@ app.post('/webhook/', function (req, res) {
 
 			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
 				sendTextMessage(sender, "Sure "+ user_name +", Let me check what kind of offers I have got in store for you.", token)
-				sendBestOffer(sender)
+				setInterval(function(){}, 2000)
 				sendTextMessage(sender, "As you have crossed the data usage threshold in the past couple of months, I think this is the most suitable offer for you.", token)
+				sendBestOffer(sender)
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 
@@ -143,7 +144,7 @@ app.post('/webhook/', function (req, res) {
 				checkIfWantsBundle(sender)
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
-				sendTextMessage(sender, "Your bundle will be activated within 1-2 hours. Thank you for your understanding in this unfortunate matter.", token)
+				sendTextMessage(sender, "Your bundle will be activated within 1-2 hours. Thank you for your understanding in this matter.", token)
 			}
 			else if (text === 'BUNDLE_EXPLORE') {
 				sendTextMessage(sender, "Our Customer Service Agent will call you to answer your queries.", token)
@@ -350,8 +351,8 @@ function sendRecommendedBundle(sender, bundle) {
 			console.log('Error: ', response.body.error)
 		} else {
 			//setTimeout(2000);
-			sendTextMessage(sender,"Total pay(now) : $"+ totalPayNow )
-			sendTextMessage(sender," Total pay(monthly) : $"+ totalPayMonthly)
+			sendTextMessage(sender,"Total pay(now) : $121" )
+			sendTextMessage(sender," Total pay(monthly) : $73 ")
 			bundleDecision(sender, bundle);
 		}
 	})
