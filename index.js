@@ -152,6 +152,7 @@ app.post('/webhook/', function (req, res) {
 			}
 			else if (text === 'BUNDLE_ACCEPTED') {
 				sendTextMessage(sender, "Your bundle will be activated within the next 2 hours. Thank you for your understanding, your business means a lot to us.", token)
+				postAcceptStep(sender)
 			}
 			else if (text === 'BUNDLE_EXPLORE') {
 				sendTextMessage(sender, "Our Customer Service Agent will call you to answer your queries.", token)
