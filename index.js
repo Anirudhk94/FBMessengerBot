@@ -64,7 +64,7 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			else if(NBA != "RetainCustomer" || text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
+			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
 				sendTextMessage(sender, "Sure "+ user_name +", Let me check what kind of offers I have got in store for you.", token)
 				sendBestOffer(sender)
 				sendTextMessage(sender, "As you have crossed the data usage threshold in the past couple of months, I think this is the most suitable offer for you.", token)
@@ -142,7 +142,7 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Your bundle will be activated within 1-2 hours. Thank you for your understanding in this unfortunate matter.", token)
 			}
 			else if (text === 'BUNDLE_EXPLORE') {
-				sendTextMessage(sender, "Thank you for your understanding in this unfortunate matter. Our Customer Service Agent will call you to explain details about the bundle.", token)
+				sendTextMessage(sender, "Thank you for your understanding in this unfortunate matter. Our Customer Service Agent will call you to explain details about the bundle", token)
 			}
 			else if (text === 'BUNDLE_REJECTED') {
 				sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! Our Customer Service Agent will get back to resolve your issue.", token)
