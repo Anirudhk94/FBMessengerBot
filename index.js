@@ -8,7 +8,7 @@ const app = express()
 let offer;
 let customer_id = 'C1000001'
 let questions = [ 
-					{ key : "ReasonForLeaving", text : "May we ask why are you unhappy with U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
+					{ key : "ReasonForLeaving", text : "May I know why you are unhappy with U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
 					{ key : "Interests", text : "What interests you most about them?", option1 : "Great promotion", option2 : "Good network", option3 : "Economical"}
 				];
@@ -134,6 +134,7 @@ app.post('/webhook/', function (req, res) {
 				sendValueStatements(sender, q1ans, q2ans, q3ans)
 			}
 			else if (text === 'INITIATE_SURVEY') {
+				sendTextMessage(sender, "I am sorry that you are not happy with our Service. I will be happy to make things right.")
 				initiateSurvey(sender)
 			}
 			else if (text === 'HAPPY_CUSTOMER') {
@@ -257,7 +258,7 @@ function findCustomer(sender) {
 		customer_id = 'C1000001'
 	} else {
 		//console.log("User ID : " + JSON.stringify(sender))
-		user_name = 'Mrs. Sara Lathm'
+		user_name = 'Mrs. Sara Connor'
 		customer_id = 'C1000002'
 	}
 }
