@@ -64,11 +64,15 @@ app.post('/webhook/', function (req, res) {
 				continue
 			} 
 
-			else if(text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')|| text.includes('Offer')|| text.includes('Plan')) {
-				sendTextMessage(sender, "Sure "+ user_name +", Let me check what kind of offers I have got in store for you.", token)
-				//setInterval(function(){}, 5000)
-				sendTextMessage(sender, "As you have crossed the data usage threshold in the past couple of months, I think this is the most suitable offer for you.", token)
-				sendBestOffer(sender)
+			else if(text.includes('data usage') ||text.includes('offer') || text.includes('plan') || text.includes('deal') || text.includes('Deal')
+					|| text.includes('Offer')|| text.includes('Plan')) {
+				sendTextMessage(sender, "Sure "+ user_name +", Your current data usage is 2.91/3.0 GB, i.e. 90% of it!", token)
+				setTimeout(function(){
+					sendTextMessage(sender, "Also, I've noticed that you've crossed the data usage threshold in the past couple of months, I would like to suggest a suitable offer for you.", token)
+					sendBestOffer(sender)
+				}, 3000)
+				
+				
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 			}
 
