@@ -8,7 +8,7 @@ const app = express()
 let offer;
 let customer_id = 'C1000001'
 let questions = [ 
-					{ key : "ReasonForLeaving", text : "May I know why you are unhappy with U+ Communications?", option1 : "Competitive Offer", option2 : "Too Expensive", option3 : "Poor Coverage"},
+					{ key : "ReasonForLeaving", text : "May I know why you are unhappy with UPlus Communications?", option1 : "Competitive offer", option2 : "Too expensive", option3 : "Poor coverage"},
 					{ key : "SelectOperator", text : "Which operator are you interested in?", option1 : "Chat Chat", option2 : "Value Communications", option3 : "Communiko"},
 					{ key : "Interests", text : "What interests you most about them?", option1 : "Great promotion", option2 : "Good network", option3 : "Economical"}
 				];
@@ -139,7 +139,7 @@ app.post('/webhook/', function (req, res) {
 				sendValueStatements(sender, q1ans, q2ans, q3ans)
 			}
 			else if (text === 'INITIATE_SURVEY') {
-				sendTextMessage(sender, "I am sorry that you are not happy with our Service. I will be happy to make things right.")
+				sendTextMessage(sender, "I am sorry that you are not happy with our service. I will be happy to make things right.")
 				initiateSurvey(sender)
 			}
 			else if (text === 'CONVO_END') {
@@ -415,7 +415,11 @@ function sendRecommendedBundle(sender, bundle) {
 			//setTimeout(2000);
 			sendTextMessage(sender,"Total pay(now) : $121" )
 			sendTextMessage(sender," Total pay(monthly) : $73 ")
-			bundleDecision(sender, bundle);
+			setTimeout(function(){
+				sendTextMessage(sender, "Current subscription details, Total pay(monthly) : $94")
+				bundleDecision(sender, bundle);
+			}, 3000)
+			
 		}
 	})
 }
@@ -443,7 +447,7 @@ function bundleDecision(sender, bundle) {
 					{
 						"type":"phone_number",
 						"payload": "+918466975975",
-						"title": "Call Representative"
+						"title": "Call representative"
 					}
 				]
 			}
@@ -506,7 +510,7 @@ function postVSurvey(sender) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Do you want to continue with the existing plan?",
+				"text": "Would you be interested in continuing with the existing plan?",
 				"buttons":[
 					{
 						"type":"postback",
@@ -521,7 +525,7 @@ function postVSurvey(sender) {
 					{
 						"type":"phone_number",
 						"payload": "+918466975975",
-						"title": "Call Representative"
+						"title": "Call representative"
 					}
 				]
 			}
@@ -647,7 +651,7 @@ function postAcceptStep(sender) {
 			"type": "template",
 			"payload": {
 				"template_type": "button",
-				"text": "Is there anything else  I can do to delight you?",
+				"text": "Is there anything else I can do to delight you?",
 				"buttons":[
 					{
 						"type": "postback",
