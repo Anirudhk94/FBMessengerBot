@@ -80,7 +80,7 @@ app.post('/webhook/', function (req, res) {
 			else if(text.includes('issue') || text.includes('problem') || text.includes('bad') || text.includes('cancel') || text.includes('Problem')
 			|| text.includes('Issue')|| text.includes('Bad')|| text.includes('Cancel') || text.includes('not')|| text.includes('Not') || text.includes('terminat') 
 			|| text.includes('Terminat')) {
-				sendTextMessage(sender, "Thank You "+ user_name+", for contacting UPlus Communications.")
+				//sendTextMessage(sender, "Thank You "+ user_name+", for contacting UPlus Communications.")
 				preInitiateSurvey(sender)
 				//initiateSurvey(sender)
 				// sendTextMessage(sender, "Let me check what kind of offers I have got in store for you.", token)
