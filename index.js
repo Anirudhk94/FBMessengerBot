@@ -71,7 +71,7 @@ app.post('/webhook/', function (req, res) {
 					sendTextMessage(sender, "Also, I've noticed that you've crossed the data usage threshold in the past couple of months, I would like to suggest a suitable offer for you.", token)
 					sendOptionCross(sender)
 					//sendBestOffer(sender)
-				}, 3000)
+				}, 4000)
 				
 				
 				// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
@@ -418,7 +418,7 @@ function sendRecommendedBundle(sender, bundle) {
 			setTimeout(function(){
 				sendTextMessage(sender, "Current subscription charges per month : $94")
 				bundleDecision(sender, bundle);
-			}, 4000)
+			}, 3000)
 			
 		}
 	})
