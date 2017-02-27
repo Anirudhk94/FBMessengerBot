@@ -44,7 +44,7 @@ app.get('/webhook/', function (req, res) {
 		res.send('Error, wrong token')
 	}
 })
-
+user_name = 'Mr. John Brown';
 // to post data
 app.post('/webhook/', function (req, res) {
 	let messaging_events = req.body.entry[0].messaging
