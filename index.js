@@ -69,7 +69,8 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Sure "+ user_name +", Your current data usage is 2.91/3.0 GB, i.e. 90% of it!", token)
 				setTimeout(function(){
 					sendTextMessage(sender, "Also, I've noticed that you've crossed the data usage threshold in the past couple of months, I would like to suggest a suitable offer for you.", token)
-					sendBestOffer(sender)
+					sendOptionCross(sender)
+					//sendBestOffer(sender)
 				}, 3000)
 				
 				
@@ -171,6 +172,15 @@ app.post('/webhook/', function (req, res) {
 				//sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! ", token)
 				retriveBundle(sender)
 			}  
+			else if (text === 'CROSS_YES') {
+				//sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! ", token)
+				sendBestOffer(sender)
+			}
+			else if (text === 'CROSS_NO') {
+				//sendTextMessage(sender, "Sorry for the inconvenience "+ user_name +"! ", token)
+				//sendBestOffer(sender)
+				postAcceptStep(sender)
+			}    
 			else {
 				//console.log("Text: " + text + " " + JSON.stringify(event.postback))
 				sendTextMessage(sender, text.substring(0, 200), token)
@@ -182,6 +192,46 @@ app.post('/webhook/', function (req, res) {
 	}
 	res.sendStatus(200)
 })
+
+//
+function sendOptionCross(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": "Would you like to have a look at the offer?",
+				"buttons":[
+					{
+						"type": "postback",
+						"title": "Yes",
+						"payload": "CROSS_YES",
+					}, {
+						"type": "postback",
+						"title": "No",
+						"payload": "CROSS_NO",
+					}
+				]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
 
 //
 function preInitiateSurvey(sender) {
