@@ -416,7 +416,7 @@ function sendRecommendedBundle(sender, bundle) {
 			sendTextMessage(sender,"Total pay(now) : $121" )
 			sendTextMessage(sender," Total pay(monthly) : $73 ")
 			setTimeout(function(){
-				sendTextMessage(sender, "Current subscription details, Total pay(monthly) : $94")
+				sendTextMessage(sender, "Current subscription, "+<center></center>+" Total pay(monthly) : $94")
 				bundleDecision(sender, bundle);
 			}, 3000)
 			
